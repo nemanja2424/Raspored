@@ -53,6 +53,7 @@ def kalendar(id):
             COALESCE(desavanja.odTime, '') AS odTime,
             COALESCE(desavanja.doTime, '') AS doTime,
             desavanja.gotov,
+            desavanja.kategD,
             desavanja.kreiran
         FROM 
             desavanja 
@@ -63,14 +64,13 @@ def kalendar(id):
     desavanja = mycursor.fetchall()
 
     return jsonify(desavanja), 200
-
 @app.route('/novo-desavanje/<datum>', methods=['POST'])
 @jwt_required()
 def novo_desavanje(datum):
     datum = datum.replace('%20', ' ')
     forma = request.get_json()
-    upit = "INSERT INTO desavanja (naslov, odTime, doTime, celodnevni, opis, datum, IDUsera) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-    vrednosti = (forma['naslov'], forma['odTime'], forma['doTime'], forma['celodnevni'], forma['opis'], forma['datum'], forma['IDUsera'])
+    upit = "INSERT INTO desavanja (naslov, odTime, doTime, celodnevni, opis, datum, kategD, IDUsera) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+    vrednosti = (forma['naslov'], forma['odTime'], forma['doTime'], forma['celodnevni'], forma['opis'], forma['datum'], forma['kategD'], forma['IDUsera'])
     mycursor.execute(upit, vrednosti)
     con.commit()
     return jsonify({"message": "Uspešno ste dodali dešavanje"}), 200
@@ -94,6 +94,7 @@ def izmeni_desavanje(id):
             COALESCE(desavanja.odTime, '') AS odTime,
             COALESCE(desavanja.doTime, '') AS doTime,
             desavanja.gotov,
+            desavanja.kategD,
             desavanja.kreiran
         FROM 
             desavanja 
@@ -109,8 +110,8 @@ def izmeni_desavanje(id):
             return jsonify({"message": "Dešavanje nije pronađeno."}), 404
     if request.method == "PUT":
         forma = request.json
-        upit = "UPDATE desavanja SET naslov=%s, odTime=%s, doTime=%s, celodnevni=%s, opis=%s WHERE desavanjaID=%s;"
-        vrednosti = (forma['naslov'], forma['odTime'], forma['doTime'], forma['celodnevni'], forma['opis'], id)
+        upit = "UPDATE desavanja SET naslov=%s, odTime=%s, doTime=%s, celodnevni=%s, opis=%s, kategD=%s WHERE desavanjaID=%s;"
+        vrednosti = (forma['naslov'], forma['odTime'], forma['doTime'], forma['celodnevni'], forma['opis'], forma['kategD'], id)
         mycursor.execute(upit, vrednosti)
         con.commit()
         return jsonify({"message": "Uspešno ste izmenili dešavanje."}), 200

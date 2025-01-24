@@ -2,11 +2,14 @@
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import { toast } from 'vue3-toastify';
+import { useRouter } from 'vue-router';
 import { odrediUredjajA, resizeListener } from '../components/device';
 
 const props = defineProps(['id']);
 const data = ref([]);
 const mojDatum = ref(null);
+const userId = localStorage.getItem('userID');
+const router = useRouter();
 
 onMounted(() => {
     odrediUredjajA();
@@ -23,6 +26,9 @@ const odTime = ref("");
 const doTime = ref("");
 const celodnevni = ref(false);
 const opis = ref("");
+const izabranaKategorija = ref(0);
+
+const kategorije = ref([]);
 const fetchDesavanje = async() => {
     try{
         const response = await axios.get(`/api/izmena-desavanja/${props.id}`, {
@@ -38,6 +44,13 @@ const fetchDesavanje = async() => {
         doTime.value = response.data.doTime;
         celodnevni.value = response.data.celodnevni;
         opis.value = response.data.opis;
+        izabranaKategorija.value = response.data.kategD;
+        const kategorijeResponse = await axios.get(`/api/kategorije/${userId}`,{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        kategorije.value = kategorijeResponse.data;
     } catch(error) {
         console.log(error)
     }
@@ -51,14 +64,15 @@ const handleSubmit = async() => {
             odTime: odTime.value,
             doTime: doTime.value,
             celodnevni: celodnevni.value,
-            opis: opis.value
+            opis: opis.value,
+            kategD: izabranaKategorija.value
         },
         {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         });
-        toast.success(response.data.message);
+        router.push(`/kalendar/${userId}`).then(() => toast.success(response.data.message));
     }catch (error) {
         console.log(error)
     }
@@ -75,6 +89,7 @@ const formatirajDatum = (datum) => {
     const godina = d.getFullYear();
     return `${dan}. ${meseci[mesec]} ${godina}.`;
 };
+
 </script>
 
 <template>
@@ -98,6 +113,15 @@ const formatirajDatum = (datum) => {
             </div>
             
             <textarea class="form-style tb" placeholder="Opis" v-model="opis"></textarea>
+            <div class="form-group">
+                <select name="kateg" id="kateg" class="form-style" required v-model="izabranaKategorija">
+                    <option value="0" disabled selected>Odaberi kategoriju</option>
+                    <option v-for="kategorija in kategorije" :key="kategorija.kategID" :value="kategorija.kategID">
+                        {{ kategorija.imeKateg }}
+                    </option>
+                </select>
+                <font-awesome-icon :icon="['fas', 'address-book']" class="input-icon2" />
+            </div>
             <button class="dugme glow" type="submit">Sačuvaj</button>
         </form>
     </div>
@@ -105,6 +129,7 @@ const formatirajDatum = (datum) => {
 </template>
 
 <style scoped>
+
 form{
     margin-top: 20px;
     min-width: 70%;
@@ -127,6 +152,14 @@ label, p{
     padding: 0;
     width: 300px;
 }
+.input-icon2{
+    position: absolute;
+    top: 60%;
+    left: 18px;
+    transform: translateY(-50%);
+    font-size: 24px;
+    text-align: left;   
+}
 .form-style {
     margin-top: 15px;
     box-shadow: 0 4px 8px 0 rgba(21,21,21,.2);
@@ -147,6 +180,7 @@ label, p{
     font-weight: 600;
     text-align: center;
 }
+
 .vreme{
     display: flex;
     flex-direction: row;
@@ -172,6 +206,12 @@ label, p{
         align-items: center;
         justify-content: space-around;
         height: 200px;
+    }
+    .form-style select {
+        width: 100%;
+    }
+    #kateg{
+        width: 100%;
     }
 }
 .form-style:focus,
@@ -305,5 +345,8 @@ div {
     align-items: center;
     justify-content: flex-start;
 }
+
+
+
 
 </style>

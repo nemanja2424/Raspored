@@ -15,6 +15,7 @@ const props = defineProps(['datum']);
 
 onMounted(() => {
     odrediUredjajA();
+    fetchKategorije();
     resizeListener();
 });
 
@@ -69,13 +70,15 @@ const doTime = ref("");
 const celodnevni = ref(false);
 const opis = ref("");
 const mojDatum = ref(props.datum);
+const izabranaKategorija = ref(0);
 const idUsera = localStorage.getItem("userID");
 
-const formatiraniDatum = ref(formatirajDatum(mojDatum.value)); 
+const formatiraniDatum = ref(formatirajDatum(mojDatum.value));
+const token = localStorage.getItem('access_token');
+
 
 const handleSubmit = async (event) => {
     event.preventDefault();
-    const token = localStorage.getItem('access_token');
     try {
         const response = await axios.post(
             `/api/novo-desavanje/${encodeURIComponent(mojDatum.value)}`,
@@ -86,6 +89,7 @@ const handleSubmit = async (event) => {
                 celodnevni: celodnevni.value,
                 opis: opis.value,
                 datum: mojDatum.value,
+                kategD: izabranaKategorija.value,
                 IDUsera: idUsera
             },
             {
@@ -103,6 +107,17 @@ const handleSubmit = async (event) => {
         toast.error(error);
     }
 };
+
+const kategorije = ref([]);
+const userId = localStorage.getItem('userID');
+const fetchKategorije = async() => {
+    const kategorijeResponse = await axios.get(`/api/kategorije/${userId}`,{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        kategorije.value = kategorijeResponse.data;
+}
 
 </script>
 
@@ -127,6 +142,16 @@ const handleSubmit = async (event) => {
             </div>
             
             <textarea class="form-style tb" placeholder="Opis" v-model="opis"></textarea>
+
+            <div class="form-group">
+                <select name="kateg" id="kateg" class="form-style" required v-model="izabranaKategorija">
+                    <option value="0" disabled selected>Odaberi kategoriju</option>
+                    <option v-for="kategorija in kategorije" :key="kategorija.kategID" :value="kategorija.kategID">
+                        {{ kategorija.imeKateg }}
+                    </option>
+                </select>
+                <font-awesome-icon :icon="['fas', 'address-book']" class="input-icon2" />
+            </div>
             <button class="dugme glow" type="submit">Sačuvaj</button>
         </form>
     </div>
@@ -134,6 +159,7 @@ const handleSubmit = async (event) => {
 </template>
 
 <style scoped>
+
 form{
     margin-top: 20px;
     min-width: 70%;
@@ -156,6 +182,14 @@ label, p{
     padding: 0;
     width: 300px;
 }
+.input-icon2{
+    position: absolute;
+    top: 60%;
+    left: 18px;
+    transform: translateY(-50%);
+    font-size: 24px;
+    text-align: left;   
+}
 .form-style {
     margin-top: 15px;
     box-shadow: 0 4px 8px 0 rgba(21,21,21,.2);
@@ -176,6 +210,7 @@ label, p{
     font-weight: 600;
     text-align: center;
 }
+
 .vreme{
     display: flex;
     flex-direction: row;
@@ -201,6 +236,12 @@ label, p{
         align-items: center;
         justify-content: space-around;
         height: 200px;
+    }
+    .form-style select {
+        width: 100%;
+    }
+    #kateg{
+        width: 100%;
     }
 }
 .form-style:focus,
@@ -334,5 +375,8 @@ div {
     align-items: center;
     justify-content: flex-start;
 }
+
+
+
 
 </style>
