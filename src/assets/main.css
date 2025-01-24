@@ -1,0 +1,297 @@
+body{
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    background-color: #1f2029;
+    color: whitesmoke;
+    margin: 0;
+    overflow-x: hidden;
+}
+a{
+    color: whitesmoke;
+    text-decoration: none;
+}
+h1, h2, h3, h4, h5, h6, p{
+    margin: 0;
+}
+.pointer{
+    cursor: pointer;
+}
+#fs{
+    min-height: calc(100vh - 40px);
+    transition: padding 0.4s ease-out;
+    padding: 20px 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.blur{
+    overflow: hidden;
+    position: fixed;
+    display: flex;
+    top: 0;
+    left: 0;
+    justify-content: center;
+    align-items: center;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: 1005;
+    backdrop-filter: blur(4px);
+}
+.glow:hover{
+    filter: drop-shadow(0px 0px 5px rgba(66, 245, 230, 0.3));
+}
+.senkaDesno{
+    filter: drop-shadow(3px 3px 3px rgba(0,0,0,0.5));
+  }
+  .senkaLevo{
+    filter: drop-shadow(-3px 3px 3px rgba(0,0,0,0.5));
+  }
+.desavanjeHeader {
+    display: flex;
+    width: 80%;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+.desavanjeHeader button{
+    background-color: #222222;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 5px ;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    font-size: 20px
+}
+.desavanjeHeader button:hover{
+    background: linear-gradient(45deg, #42f5e6, #6c3dff, #f27cf0, #374bff);
+}
+.sva-desavanja{
+    width: 90%;
+    height: inherit;
+}
+.moje-desavanje, .dodato-desavanje {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 20px;
+    padding: 10px;
+    cursor: pointer;
+    background-color: #1c1c1cb4;
+    overflow: hidden;
+    transition: background-color 0.4s ease-out;
+    margin-bottom: 10px;
+}
+
+.moje-desavanje::before,
+.dodato-desavanje::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    background: linear-gradient(45deg, #42f5e6, #6c3dff, #f27cf0, #374bff);
+    opacity: 0;
+    transition: opacity 0.4s ease-out;
+    z-index: -1;
+}
+
+.moje-desavanje:hover::before,
+.dodato-desavanje:hover::before {
+    opacity: 1;
+}
+.dodato-desavanje{
+    cursor: default;
+}
+.dodato-desavanje p{
+    text-align: center;
+    margin-top: 10px;
+}
+.moje-desavanje p{
+    font-weight: 600;
+    font-size: 20px;
+}
+.sva-desavanja {
+    max-height: 100%;
+    max-width: 100%;
+    padding-right: 10px;
+    overflow-y: auto;
+}
+.sva-desavanja::-webkit-scrollbar {
+    width: 8px;
+}
+.sva-desavanja::-webkit-scrollbar-track {
+    background-color: #555;
+    border-radius: 10px;
+}
+.sva-desavanja::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+}
+.sva-desavanja::-webkit-scrollbar-thumb:hover {
+    background-color: #1c1c1c;
+}
+
+.event-option{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 18px;
+    width: 18px;
+    margin: 10px 5px;
+    background-color: #1c1c1c;
+    padding: 8px ;
+    border-radius: 50px;
+    cursor: pointer;
+}
+.event-option:hover{
+    color: #6c3dff;
+}
+.login{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(45deg, #42f5e6, #6c3dff, #f27cf0, #374bff);
+    border-radius: 80px;
+    z-index: 1;
+    padding: 60px;
+}
+.login::before{
+  content: "";
+  position: absolute;
+  background-color: #292929b7;
+  filter: blur(2px);
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
+  border-radius: 78px;
+  z-index: -1;
+}
+.dugme{  
+    padding: 10px 14px;
+    border-radius: 15px;
+    border: none;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: #1f2029;
+    color: whitesmoke;
+}
+.da:hover{
+    color: red;
+}
+.ne:hover{
+    color: #6c3dff;
+}
+@media screen and (min-width: 880px) {
+    #fs{
+        width: 90%;
+        height: 100%;
+    }
+    .desavanje {
+        position: absolute;
+        min-height: 200px;
+        min-width: 600px;
+        height: 90%;
+        width: 600px;
+        background-color: rgba(41, 41, 41, 0.8);
+        backdrop-filter: blur(10px);
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        border-radius: 50px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-wrap: wrap;
+        bottom: 30px;
+        right: 30px;
+    }
+    .desavanjeX{
+        cursor: pointer;
+        border-radius: 100px;
+        background-color: #1c1c1c;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 18px;
+        right: 20px;
+        transition: all 0.5s ease-out;
+        font-size: 18px;
+        height: 18px;
+        width: 18px;
+    }
+    .desavanjeX:hover{
+      background: black;
+    }
+    .desavanjeR{
+        cursor: pointer;
+        border-radius: 100px;
+        background-color: #1c1c1c;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 18px;
+        left: 20px;
+        transition: all 0.5s ease-out;
+        font-size: 18px;
+        height: 18px;
+        width: 18px;
+    }
+    .desavanjeR:hover{
+        background-color: black;
+    }
+}
+@media screen and (max-width: 880px) {
+    .desavanje{
+        min-height: 100%;
+        max-height: 100%;
+        width: calc(100% - 40px);
+        background-color: rgba(41, 41, 41, 0.8);
+        backdrop-filter: blur(10px);
+        position: fixed;
+        border-radius: 30px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .desavanje h1{
+        font-size: 20px;
+    }
+    .sva-desavanja{
+        margin-bottom: 50px;
+    }
+    .desavanjeX{
+        cursor: pointer;
+        border-radius: 100px;
+        background-color: #1c1c1c;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 18px;
+        right: 10px;
+        transition: all 0.5s ease-out;
+        font-size: 18px;
+        height: 18px;
+        width: 18px;
+    }
+    .desavanjeX:hover{
+      background: black;
+    }
+    .desavanjeR{
+        display: none;
+    }
+}
