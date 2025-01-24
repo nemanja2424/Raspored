@@ -252,6 +252,7 @@ const filtrirajDesavanja = (datum) => {
         <h1 style="margin-bottom: 10px; text-align: center;">${desavanje.naslov}</h1>
         <div id="dodajVreme" style="display: inline;"></div>
         <b>
+          <span style="font-weight: normal;">Kategorija:</span> ${desavanje.kategD}</br>
           ${desavanje.celodnevni}
           ${vreme}
         </b>

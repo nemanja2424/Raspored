@@ -70,7 +70,7 @@ const doTime = ref("");
 const celodnevni = ref(false);
 const opis = ref("");
 const mojDatum = ref(props.datum);
-const izabranaKategorija = ref(0);
+const izabranaKategorija = ref(1);
 const idUsera = localStorage.getItem("userID");
 
 const formatiraniDatum = ref(formatirajDatum(mojDatum.value));
@@ -145,7 +145,7 @@ const fetchKategorije = async() => {
 
             <div class="form-group">
                 <select name="kateg" id="kateg" class="form-style" required v-model="izabranaKategorija">
-                    <option value="0" disabled selected>Odaberi kategoriju</option>
+                    <option value="1" disabled selected>Odaberi kategoriju</option>
                     <option v-for="kategorija in kategorije" :key="kategorija.kategID" :value="kategorija.kategID">
                         {{ kategorija.imeKateg }}
                     </option>

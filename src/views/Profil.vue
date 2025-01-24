@@ -42,11 +42,11 @@ const email = ref("");
 const lozinka = ref("");
 const rola = ref(0);
 const token = localStorage.getItem('access_token');
-const id = localStorage.getItem('userID');
+const userId = localStorage.getItem('userID');
 const kategorije = ref([]);
 const fetchKorisnik = async () => {
     try {
-        const response = await axios.get(`/api/izmenak/${id}`, {
+        const response = await axios.get(`/api/izmenak/${userId}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -55,14 +55,14 @@ const fetchKorisnik = async () => {
         email.value = response.data.email;
         rola.value = response.data.rola;
 
-        const kategorijeResponse = await axios.get(`/api/kategorije/${id}`,{
+        const kategorijeResponse = await axios.get(`/api/kategorije/${userId}`,{
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         });
         kategorije.value = kategorijeResponse.data;
     } catch (error) {
-        
+        console.error(error)
     }
 }
 
@@ -89,7 +89,7 @@ const handleSubmitProfil = async() => {
 const novaKateg = ref("");
 const handleSubmitKateg = async() => {
     try {
-        const response = await axios.post(`/api/kategorije/${id}`,{
+        const response = await axios.post(`/api/kategorije/${userId}`,{
             imeKateg: novaKateg.value
         },
         {  
@@ -97,11 +97,12 @@ const handleSubmitKateg = async() => {
                 'Authorization': `Bearer ${token}`
             }
         });
-        const kategorijeResponse = await axios.get(`/api/kategorije/${id}`,{
+        const kategorijeResponse = await axios.get(`/api/kategorije/${userId}`,{
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         });
+        novaKateg.value = "";
         kategorije.value = kategorijeResponse.data;
     } catch (error) {
         console.log(error)
@@ -169,7 +170,7 @@ const handleDelete = async (kategorija) => {
             <div v-for="kategorija in kategorije" :key="kategorija.kategID">
                 <div :id="'kateg' + kategorija.kategID" class="zadatak">
                     <b>{{ kategorija.imeKateg }}</b>
-                    <div style="display: inline-flex;">
+                    <div style="display: inline-flex;" v-if="kategorija.kategID != 1">
                         <RouterLink :to="'/izmena-kateg/' + kategorija.kategID">
                             <div :id="'izmeni' + kategorija.kategID" class="event-option glow" style="cursor: pointer;">
                                 <font-awesome-icon :icon="['fas', 'pen-to-square']" style="cursor: pointer;"/>

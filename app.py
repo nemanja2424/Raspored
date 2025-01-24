@@ -128,12 +128,11 @@ def zadaci(id):
         return jsonify(desavanja), 200
     if request.method == "POST":
         forma = request.get_json()
-        upit = "INSERT INTO zadaci (IDUsera, opis, jednokratni, rok, uradjeno, brojac) VALUE (%s, %s, %s, %s, %s, %s)"
-        vrednosti = (id, forma['opis'], forma['jednokratni'], forma['rok'], forma['uradjeno'], forma['brojac'])
+        upit = "INSERT INTO zadaci (IDUsera, opis, jednokratni, rok, uradjeno, brojac, kategZ) VALUE (%s, %s, %s, %s, %s, %s, %s)"
+        vrednosti = (id, forma['opis'], forma['jednokratni'], forma['rok'], forma['uradjeno'], forma['brojac'], forma['kategZ'])
         mycursor.execute(upit, vrednosti)
         con.commit()
         return jsonify({"message": "Uspešno ste dodali zadatak"}), 200
-
 @app.route('/izmena-zadataka/<int:id>', methods=['PUT', 'DELETE', 'GET'])
 @jwt_required()
 def zadaciIzmene(id):
@@ -146,11 +145,12 @@ def zadaciIzmene(id):
                 uradjeno = %s,
                 jednokratni = %s,
                 brojac = %s,
-                rok = %s
+                rok = %s,
+                kategZ = %s
             WHERE
                 zadatakID = %s;
         """
-        vrednosti = (forma ['opis'], forma['uradjeno'], forma['jednokratni'], forma['brojac'], forma['rok'], id)
+        vrednosti = (forma ['opis'], forma['uradjeno'], forma['jednokratni'], forma['brojac'], forma['rok'], forma['kategZ'], id)
         mycursor.execute(upit, vrednosti)
         con.commit()
         return jsonify({"message": "Uspešno ste izmenili zadatak"}), 200
@@ -164,7 +164,6 @@ def zadaciIzmene(id):
         mycursor.execute(upit, vrednost)
         result = mycursor.fetchone()
         return jsonify(result), 200
-
 @app.route('/brojac/<int:id>', methods=['POST', 'DELETE'])
 @jwt_required()
 def brojacIstorija(id):
@@ -297,7 +296,7 @@ def brisanjeSvega(tabela):
 @jwt_required()
 def kategorije(id):
     if request.method == "GET":
-        mycursor.execute("SELECT * FROM kategorije WHERE IDUsera = %s;", (id,))
+        mycursor.execute("SELECT * FROM kategorije WHERE IDUsera = %s OR IDUsera IS NULL;", (id,))
         kategorije = mycursor.fetchall()
         return jsonify(kategorije), 200
     if request.method == "POST":

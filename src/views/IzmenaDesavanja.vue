@@ -26,7 +26,7 @@ const odTime = ref("");
 const doTime = ref("");
 const celodnevni = ref(false);
 const opis = ref("");
-const izabranaKategorija = ref(0);
+const izabranaKategorija = ref(1);
 
 const kategorije = ref([]);
 const fetchDesavanje = async() => {
@@ -45,11 +45,13 @@ const fetchDesavanje = async() => {
         celodnevni.value = response.data.celodnevni;
         opis.value = response.data.opis;
         izabranaKategorija.value = response.data.kategD;
+
         const kategorijeResponse = await axios.get(`/api/kategorije/${userId}`,{
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         });
+        console.log("ojsa")
         kategorije.value = kategorijeResponse.data;
     } catch(error) {
         console.log(error)
@@ -115,7 +117,6 @@ const formatirajDatum = (datum) => {
             <textarea class="form-style tb" placeholder="Opis" v-model="opis"></textarea>
             <div class="form-group">
                 <select name="kateg" id="kateg" class="form-style" required v-model="izabranaKategorija">
-                    <option value="0" disabled selected>Odaberi kategoriju</option>
                     <option v-for="kategorija in kategorije" :key="kategorija.kategID" :value="kategorija.kategID">
                         {{ kategorija.imeKateg }}
                     </option>

@@ -7,6 +7,7 @@ import { odrediUredjajA, resizeListener } from '../components/device';
 
 const router = useRouter();
 const props = defineProps(['id']);
+const userId = localStorage.getItem('userID');
 
 onMounted(() => {
     odrediUredjajA();
@@ -33,6 +34,8 @@ const jednokratni = ref();
 const brojac = ref();
 const rok = ref(null);
 const rokAPI = ref(null);
+const izabranaKategorija = ref(1);
+const kategorije = ref([]);
 const fetchZadatak = async() => {
     try{
         const response = await axios.get(`/api/izmena-zadataka/${props.id}`, {
@@ -51,6 +54,14 @@ const fetchZadatak = async() => {
         brojac.value = response.data.brojac;
         rokAPI.value = response.data.rok;
         rok.value = formatirajRok(response.data.rok);
+        izabranaKategorija.value = response.data.kategZ;
+
+        const kategorijeResponse = await axios.get(`/api/kategorije/${userId}`,{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        kategorije.value = kategorijeResponse.data;
     } catch(error) {
         console.log(error)
     }
@@ -67,7 +78,8 @@ const handleSubmit = async (event) => {
                 uradjeno: uradjeno.value,
                 jednokratni: jednokratni.value,
                 brojac: brojac.value,
-                rok: rokZaSlanje
+                rok: rokZaSlanje,
+                kategZ: izabranaKategorija.value
             },
             {
                 headers: {
@@ -100,6 +112,15 @@ const handleSubmit = async (event) => {
                     <label>Rok:&nbsp;</label>
                     <input type="date" id="rok" v-model="rok" class="form-style">
                 </div>
+            </div>
+
+            <div class="form-group">
+                <select name="kateg" id="kateg" class="form-style" required v-model="izabranaKategorija">
+                    <option v-for="kategorija in kategorije" :key="kategorija.kategID" :value="kategorija.kategID">
+                        {{ kategorija.imeKateg }}
+                    </option>
+                </select>
+                <font-awesome-icon :icon="['fas', 'address-book']" class="input-icon2" />
             </div>
             
             <button class="dugme glow" type="submit">Sačuvaj</button>
@@ -328,7 +349,14 @@ div {
 }
 
 
-
+.input-icon2{
+    position: absolute;
+    top: 60%;
+    left: 18px;
+    transform: translateY(-50%);
+    font-size: 24px;
+    text-align: left;   
+}
 
 #rok{
     margin-top: 0px;
