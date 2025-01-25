@@ -37,6 +37,8 @@ const route = useRoute();
 const idUsera = route.params.id;
 const token = localStorage.getItem('access_token');
 const zadaci = ref([]);
+const kategorije = ref();
+const izabranaKategorija = ref(1);
 const fetchZadatke = async() => {
     try{
         const response = await axios.get(`/api/zadaci/${idUsera}`, {
@@ -45,6 +47,12 @@ const fetchZadatke = async() => {
             }
         });
         zadaci.value = response.data;
+        const kategorijeResponse = await axios.get(`/api/kategorije/${idUsera}`,{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        kategorije.value = kategorijeResponse.data;
     } catch(error) {
         toast.error("Zadaci nisu učitani")
         console.log(error)
@@ -188,6 +196,14 @@ const handleDelete = async(zadatak) => {
                         <input type="date" id="rok" v-model="rokDodaj" class="form-style">
                     </div>
                 </div>
+                <div class="form-group">
+                    <select name="kateg" id="kateg" class="form-style" required v-model="izabranaKategorija">
+                        <option v-for="kategorija in kategorije" :key="kategorija.kategID" :value="kategorija.kategID">
+                            {{ kategorija.imeKateg }}
+                        </option>
+                    </select>
+                    <font-awesome-icon :icon="['fas', 'address-book']" class="input-icon2" />
+                </div>
                 <button class="dugme glow" type="submit">Sačuvaj</button>
             </form>
         </div>
@@ -198,8 +214,9 @@ const handleDelete = async(zadatak) => {
                     <div v-for="zadatak in zadaci" :key="zadatak.zadatakID" >
                         <div class="zadatak" v-if="zadatak.jednokratni === 1 && zadatak.uradjeno === 0">
                             <div>
-                                <h3>{{ zadatak.opis }}</h3>
-                                <p>Rok: {{ formatDate(zadatak.rok) }}</p>
+                                <h3 style="margin-bottom: 7px;">{{ zadatak.opis }}</h3>
+                                <p>Kategorija: <b>{{ zadatak.kategZ }}</b></p>
+                                <p>Rok: <b>{{ formatDate(zadatak.rok) }}</b></p>
                                 <p>{{ prosaoRok(zadatak.rok) }}</p>
                             </div>
                             
@@ -226,8 +243,9 @@ const handleDelete = async(zadatak) => {
                     <div v-for="zadatak in zadaci" :key="zadatak.zadatakID" >
                         <div class="zadatak" v-if="zadatak.jednokratni === 0 && zadatak.uradjeno !== 1">
                             <div>
-                                <h3>{{ zadatak.opis }}</h3>
+                                <h3 style="margin-bottom: 7px;">{{ zadatak.opis }}</h3>
                                 <p>Urađeno {{ zadatak.brojac }} puta.</p>
+                                <p>Kategorija: <b>{{ zadatak.kategZ }}</b></p>
                             </div>
                             <div style="display: inline-flex; ">
                                 <div :id="'brojac' + zadatak.zadatakID" class="event-option tick glow" style="cursor: pointer;" @click="handleBrojac(zadatak)">
@@ -259,7 +277,8 @@ const handleDelete = async(zadatak) => {
                         <div class="zadatak" v-if="zadatak.uradjeno === 1">
                             <div>
                                 <h3>{{ zadatak.opis }}</h3>
-                                <p>Urađeno</p>
+                                <b>Urađeno</b>
+                                <p>Kategorija: <b>{{ zadatak.kategZ }}</b></p>
                             </div>
                             
                             <div style="display: inline-flex; ">
@@ -482,8 +501,23 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     cursor: pointer;
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" viewBox="0 0 24 24"><path fill="%23bbbbbb" d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z"/></svg>');
 }
-
-
+.form-group{ 
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 15px;
+    padding: 0;
+    width: 300px;
+}
+.input-icon2{
+    position: absolute;
+    top: 50%;
+    left: 18px;
+    transform: translateY(-50%);
+    font-size: 24px;
+    text-align: left;   
+}
 
 @media screen and (max-width: 880px) {
     #fs{

@@ -51,7 +51,6 @@ const fetchDesavanje = async() => {
                 'Authorization': `Bearer ${token}`
             }
         });
-        console.log("ojsa")
         kategorije.value = kategorijeResponse.data;
     } catch(error) {
         console.log(error)

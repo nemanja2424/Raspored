@@ -71,6 +71,7 @@ h1, h2, h3, h4, h5, h6, p{
 }
 .moje-desavanje, .dodato-desavanje {
     position: relative;
+    text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -53,11 +53,13 @@ def kalendar(id):
             COALESCE(desavanja.odTime, '') AS odTime,
             COALESCE(desavanja.doTime, '') AS doTime,
             desavanja.gotov,
-            desavanja.kategD,
+            kategorije.imeKateg AS kategD,
             desavanja.kreiran
         FROM 
             desavanja 
-        WHERE IDUsera = %s;
+        LEFT JOIN
+            kategorije ON desavanja.kategD = kategorije.kategID
+        WHERE desavanja.IDUsera = %s;
     """
     vrednost = (id,)
     mycursor.execute(upit, vrednost)
@@ -121,7 +123,22 @@ def izmeni_desavanje(id):
 @jwt_required()
 def zadaci(id):
     if request.method == "GET":
-        upit = "SELECT * FROM zadaci WHERE IDUsera = %s;"
+        upit = """
+            SELECT
+                zadaci.zadatakID,
+                zadaci.IDUsera,
+                zadaci.opis,
+                zadaci.jednokratni,
+                zadaci.uradjeno,
+                zadaci.brojac,
+                zadaci.kreiran,
+                zadaci.rok,
+                kategorije.imeKateg AS kategZ
+            FROM
+                zadaci
+            LEFT JOIN
+                kategorije ON zadaci.kategZ = kategorije.kategID  WHERE zadaci.IDUsera = %s;
+        """
         vrednost = (id,)
         mycursor.execute(upit, vrednost)
         desavanja = mycursor.fetchall()
@@ -148,7 +165,7 @@ def zadaciIzmene(id):
                 rok = %s,
                 kategZ = %s
             WHERE
-                zadatakID = %s;
+                zadaci.zadatakID = %s;
         """
         vrednosti = (forma ['opis'], forma['uradjeno'], forma['jednokratni'], forma['brojac'], forma['rok'], forma['kategZ'], id)
         mycursor.execute(upit, vrednosti)
@@ -159,7 +176,13 @@ def zadaciIzmene(id):
         con.commit()
         return jsonify({"message": "Uspešno ste obrisali zadatak."}), 200
     if request.method == "GET":
-        upit = "SELECT * FROM zadaci WHERE zadatakID = %s;"
+        upit = """
+            SELECT
+                *
+            FROM
+                zadaci   
+            WHERE zadatakID = %s;
+        """
         vrednost = (id,)
         mycursor.execute(upit, vrednost)
         result = mycursor.fetchone()
