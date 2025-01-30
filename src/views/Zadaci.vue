@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
 import { useRouter, useRoute, RouterLink } from "vue-router";
 import { toast } from 'vue3-toastify';
@@ -67,6 +67,18 @@ const jednokratniDodaj = ref(true);
 const rokDodaj = ref(null);
 const uradjenoDodaj = ref(false);
 const brojacDodaj = ref(0);
+const period = ref("nedeljno")
+const brCilj = ref(0)
+const cilj = computed(() => {
+    if (period.value === "nedeljno") {
+        return brCilj.value * 52;
+    } else if (period.value === "mesecno") {
+        return brCilj.value * 12;
+    } else {
+        return brCilj.value;
+    }
+});
+
 const handleSubmit = async() => {
     try{
         const response = await axios.post(`/api/zadaci/${idUsera}`, {
@@ -74,7 +86,10 @@ const handleSubmit = async() => {
             jednokratni: jednokratniDodaj.value,
             rok: rokDodaj.value,
             uradjeno: uradjenoDodaj.value,
-            brojac: brojacDodaj.value
+            brojac: brojacDodaj.value,
+            kategZ: izabranaKategorija.value,
+            cilj: brCilj.value,
+            period: period.value
         },
         {
             headers: {
@@ -98,7 +113,8 @@ const handleUradjeno = async(zadatak) => {
             uradjeno: zadatak.uradjeno,
             jednokratni: zadatak.jednokratni,
             brojac: zadatak.brojac,
-            rok: formattedDate
+            rok: formattedDate,
+            kategZ: zadatak.IDKategorije
         },
         {
             headers: {
@@ -120,7 +136,8 @@ const handleBrojac = async(zadatak) => {
             uradjeno: zadatak.uradjeno,
             jednokratni: zadatak.jednokratni,
             brojac: zadatak.brojac,
-            rok: null
+            rok: null,
+            kategZ: zadatak.IDKategorije
         },
         {
             headers: {
@@ -147,7 +164,8 @@ const handleReset = async(zadatak) => {
             uradjeno: zadatak.uradjeno,
             jednokratni: zadatak.jednokratni,
             brojac: zadatak.brojac,
-            rok: null
+            rok: null,
+            kategZ: zadatak.IDKategorije
         },
         {
             headers: {
@@ -203,6 +221,17 @@ const handleDelete = async(zadatak) => {
                         </option>
                     </select>
                     <font-awesome-icon :icon="['fas', 'address-book']" class="input-icon2" />
+                </div>
+                <div class="clij-grupa">
+                    <div class="form-group period-element">
+                        <select name="period" id="period" class="form-style" v-model="period">
+                            <option value="nedeljno" selected>Nedeljno</option>
+                            <option value="mesecno">Mesečno</option>
+                            <option value="godisnje">Godišnje</option>
+                        </select>
+                        <font-awesome-icon :icon="['fas', 'trophy']" class="input-icon2" />
+                    </div>
+                    <input id="cilj" type="number" class="form-style" placeholder="Cilj ponavljanja" v-model="brCilj">
                 </div>
                 <button class="dugme glow" type="submit">Sačuvaj</button>
             </form>
@@ -518,7 +547,25 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     font-size: 24px;
     text-align: left;   
 }
-
+.clij-grupa{
+    flex-wrap: wrap;
+    display: inline-flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 10px;
+    width: 100%;
+}
+#period{
+    width: 250px;
+}
+.period-element{
+    width: auto;
+    margin-top: 0px;
+}
+#cilj{
+    width: 200px;
+    padding: 0px 20px;
+}
 @media screen and (max-width: 880px) {
     #fs{
         padding: 0px;

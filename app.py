@@ -133,7 +133,10 @@ def zadaci(id):
                 zadaci.brojac,
                 zadaci.kreiran,
                 zadaci.rok,
-                kategorije.imeKateg AS kategZ
+                kategorije.imeKateg AS kategZ,
+                zadaci.kategZ AS IDKategorije,
+                zadaci.period,
+                zadaci.cilj
             FROM
                 zadaci
             LEFT JOIN
@@ -145,8 +148,9 @@ def zadaci(id):
         return jsonify(desavanja), 200
     if request.method == "POST":
         forma = request.get_json()
-        upit = "INSERT INTO zadaci (IDUsera, opis, jednokratni, rok, uradjeno, brojac, kategZ) VALUE (%s, %s, %s, %s, %s, %s, %s)"
-        vrednosti = (id, forma['opis'], forma['jednokratni'], forma['rok'], forma['uradjeno'], forma['brojac'], forma['kategZ'])
+        upit = """INSERT INTO zadaci (IDUsera, opis, jednokratni, rok, uradjeno, brojac, kategZ, cilj, period)
+            VALUE (%s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+        vrednosti = (id, forma['opis'], forma['jednokratni'], forma['rok'], forma['uradjeno'], forma['brojac'], forma['kategZ'], forma['cilj'], forma['period'])
         mycursor.execute(upit, vrednosti)
         con.commit()
         return jsonify({"message": "Uspešno ste dodali zadatak"}), 200
@@ -163,11 +167,13 @@ def zadaciIzmene(id):
                 jednokratni = %s,
                 brojac = %s,
                 rok = %s,
-                kategZ = %s
+                kategZ = %s,
+                period = %s,
+                cilj = %s
             WHERE
                 zadaci.zadatakID = %s;
         """
-        vrednosti = (forma ['opis'], forma['uradjeno'], forma['jednokratni'], forma['brojac'], forma['rok'], forma['kategZ'], id)
+        vrednosti = (forma ['opis'], forma['uradjeno'], forma['jednokratni'], forma['brojac'], forma['rok'], forma['kategZ'], forma['period'], forma['cilj'], id)
         mycursor.execute(upit, vrednosti)
         con.commit()
         return jsonify({"message": "Uspešno ste izmenili zadatak"}), 200

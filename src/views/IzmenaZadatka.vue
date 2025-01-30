@@ -1,6 +1,6 @@
 <script setup>
 import axios from 'axios';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import { toast } from 'vue3-toastify';
 import { useRouter } from 'vue-router';
 import { odrediUredjajA, resizeListener } from '../components/device';
@@ -36,36 +36,51 @@ const rok = ref(null);
 const rokAPI = ref(null);
 const izabranaKategorija = ref(1);
 const kategorije = ref([]);
+const period = ref("nedeljno")
+const cilj = ref(0)
+const brCilj = computed(() => {
+    if (period.value === "nedeljno") {
+        return cilj.value * 52;
+    } else if (period.value === "mesecno") {
+        return cilj.value * 12;
+    } else {
+        return cilj.value;
+    }
+});
 const fetchZadatak = async() => {
-    try{
+    try {
         const response = await axios.get(`/api/izmena-zadataka/${props.id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         });
-        if(response.data.jednokratni == 1) {
-            jednokratni.value = true;
-        } else {
-            jednokratni.value = false;
-        }
 
+        jednokratni.value = response.data.jednokratni === 1;
         opis.value = response.data.opis;
         uradjeno.value = response.data.uradjeno;
         brojac.value = response.data.brojac;
         rokAPI.value = response.data.rok;
         rok.value = formatirajRok(response.data.rok);
         izabranaKategorija.value = response.data.kategZ;
+        period.value = response.data.period.toLowerCase();
+        if (period.value === "nedeljno") {
+            cilj.value = response.data.cilj / 52;
+        } else if (period.value === "mesecno") {
+            cilj.value = response.data.cilj / 12;
+        } else {
+            cilj.value = response.data.cilj;
+        }
 
-        const kategorijeResponse = await axios.get(`/api/kategorije/${userId}`,{
+        const kategorijeResponse = await axios.get(`/api/kategorije/${userId}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         });
         kategorije.value = kategorijeResponse.data;
-    } catch(error) {
-        console.log(error)
+    } catch (error) {
+        console.log(error);
     }
-}
+};
 
 const handleSubmit = async (event) => {
     event.preventDefault();
@@ -79,7 +94,9 @@ const handleSubmit = async (event) => {
                 jednokratni: jednokratni.value,
                 brojac: brojac.value,
                 rok: rokZaSlanje,
-                kategZ: izabranaKategorija.value
+                kategZ: izabranaKategorija.value,
+                cilj: brCilj.value,
+                period: period.value
             },
             {
                 headers: {
@@ -122,6 +139,17 @@ const handleSubmit = async (event) => {
                 </select>
                 <font-awesome-icon :icon="['fas', 'address-book']" class="input-icon2" />
             </div>
+            <div class="clij-grupa">
+                    <div class="form-group period-element">
+                        <select name="period" id="period" class="form-style" v-model="period">
+                            <option value="nedeljno" selected>Nedeljno</option>
+                            <option value="mesecno">Mesečno</option>
+                            <option value="godisnje">Godišnje</option>
+                        </select>
+                        <font-awesome-icon :icon="['fas', 'trophy']" class="input-icon2" />
+                    </div>
+                    <input id="cilj" type="number" class="form-style" placeholder="Cilj ponavljanja" v-model="cilj">
+                </div>
             
             <button class="dugme glow" type="submit">Sačuvaj</button>
         </form>
@@ -363,5 +391,23 @@ div {
     width: 100%;
     max-width: 160px;
 }
-
+.clij-grupa{
+    flex-wrap: wrap;
+    display: inline-flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 10px;
+    width: 500px;
+}
+#period{
+    width: 250px;
+}
+.period-element{
+    width: auto;
+    margin: 0px;
+}
+#cilj{
+    width: 200px;
+    padding: 0px 20px;
+}
 </style>
