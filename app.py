@@ -348,6 +348,42 @@ def izmenaKateg(id):
         mycursor.execute(upit, vrednosti)
         con.commit()
         return jsonify({"message": "Uspešno ste izmenili kategoriju."}), 200
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>STATISTIKA
+@app.route('/statistika/<int:id>', methods=['GET'])
+@jwt_required()
+def statistika(id):
+    sqlZadaci = """
+            SELECT 
+                zadaci.zadatakID,
+                zadaci.opis AS zadatak_opis,
+                zadaci.jednokratni,
+                zadaci.uradjeno,
+                zadaci.brojac,
+                zadaci.kreiran,
+                zadaci.rok,
+                zadaci.cilj,
+                kategorije.imeKateg AS kategZ,
+                istorijaZadataka.izID,
+                istorijaZadataka.uradjen,
+                user.ime AS korisnik_ime
+            FROM 
+                zadaci
+            JOIN 
+                user ON zadaci.IDUsera = user.userID
+            LEFT JOIN
+                kategorije ON zadaci.kategZ = kategorije.kategID
+            LEFT JOIN 
+                istorijaZadataka ON zadaci.zadatakID = istorijaZadataka.IDZadatka
+            WHERE 
+                user.userID = %s;
+            """
+    mycursor.execute(sqlZadaci, (id,))
+    zadaci = mycursor.fetchall()
+    return jsonify(zadaci), 200
+
+
+
+
 
 
 if __name__ == "__main__":

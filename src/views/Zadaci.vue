@@ -114,7 +114,9 @@ const handleUradjeno = async(zadatak) => {
             jednokratni: zadatak.jednokratni,
             brojac: zadatak.brojac,
             rok: formattedDate,
-            kategZ: zadatak.IDKategorije
+            kategZ: zadatak.IDKategorije,
+            cilj: brCilj.value,
+            period: period.value
         },
         {
             headers: {
@@ -137,7 +139,9 @@ const handleBrojac = async(zadatak) => {
             jednokratni: zadatak.jednokratni,
             brojac: zadatak.brojac,
             rok: null,
-            kategZ: zadatak.IDKategorije
+            kategZ: zadatak.IDKategorije,
+            cilj: brCilj.value,
+            period: period.value
         },
         {
             headers: {
@@ -165,7 +169,9 @@ const handleReset = async(zadatak) => {
             jednokratni: zadatak.jednokratni,
             brojac: zadatak.brojac,
             rok: null,
-            kategZ: zadatak.IDKategorije
+            kategZ: zadatak.IDKategorije,
+            cilj: brCilj.value,
+            period: period.value
         },
         {
             headers: {
