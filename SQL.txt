@@ -1,0 +1,80 @@
+CREATE TABLE `desavanja` (
+   `desavanjaID` int NOT NULL AUTO_INCREMENT,
+   `IDUsera` int DEFAULT NULL,
+   `naslov` varchar(50) DEFAULT NULL,
+   `opis` varchar(600) DEFAULT NULL,
+   `celodnevni` tinyint(1) DEFAULT NULL,
+   `datum` date DEFAULT NULL,
+   `odTime` time DEFAULT NULL,
+   `gotov` tinyint(1) DEFAULT NULL,
+   `kreiran` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+   `doTime` time DEFAULT NULL,
+   `kategD` int DEFAULT '1',
+   PRIMARY KEY (`desavanjaID`),
+   KEY `fkUser` (`IDUsera`),
+   KEY `fkKategD` (`kategD`),
+   CONSTRAINT `fkKategD` FOREIGN KEY (`kategD`) REFERENCES `kategorije` (`kategID`),
+   CONSTRAINT `fkUser` FOREIGN KEY (`IDUsera`) REFERENCES `user` (`userID`) ON DELETE CASCADE
+ ) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+
+CREATE TABLE `zadaci` (
+   `zadatakID` int NOT NULL AUTO_INCREMENT,
+   `IDUsera` int DEFAULT NULL,
+   `opis` varchar(50) DEFAULT NULL,
+   `jednokratni` tinyint(1) DEFAULT NULL,
+   `uradjeno` tinyint(1) DEFAULT NULL,
+   `brojac` int DEFAULT NULL,
+   `kreiran` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+   `rok` date DEFAULT NULL,
+   `kategZ` int DEFAULT '1',
+   `cilj` int DEFAULT '0',
+   `period` varchar(15) DEFAULT 'Godišnje',
+   PRIMARY KEY (`zadatakID`),
+   KEY `fkUser2` (`IDUsera`),
+   KEY `fkKateg2` (`kategZ`),
+   CONSTRAINT `fkKateg2` FOREIGN KEY (`kategZ`) REFERENCES `kategorije` (`kategID`)
+ ) ENGINE=InnoDB AUTO_INCREMENT=114 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+
+CREATE TABLE `istorijazadataka` (
+   `izID` int NOT NULL AUTO_INCREMENT,
+   `IDZadatka` int DEFAULT NULL,
+   `uradjen` date DEFAULT (curdate()),
+   PRIMARY KEY (`izID`),
+   KEY `istorijazadataka_ibfk_1` (`IDZadatka`),
+   CONSTRAINT `istorijazadataka_ibfk_1` FOREIGN KEY (`IDZadatka`) REFERENCES `zadaci` (`zadatakID`) ON DELETE CASCADE
+ ) ENGINE=InnoDB AUTO_INCREMENT=127 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+
+
+CREATE TABLE `user` (
+   `userID` int NOT NULL AUTO_INCREMENT,
+   `ime` varchar(50) DEFAULT NULL,
+   `email` varchar(100) DEFAULT NULL,
+   `lozinka` varchar(500) DEFAULT NULL,
+   `rola` int DEFAULT NULL,
+   `kreirano` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+   PRIMARY KEY (`userID`),
+   KEY `fkRole` (`rola`),
+   CONSTRAINT `fkRole` FOREIGN KEY (`rola`) REFERENCES `rola` (`rolaID`)
+ ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+
+CREATE TABLE `rola` (
+   `rolaID` int NOT NULL AUTO_INCREMENT,
+   `ime` varchar(50) DEFAULT NULL,
+   PRIMARY KEY (`rolaID`)
+ ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+
+
+CREATE TABLE `kategorije` (
+   `kategID` int NOT NULL AUTO_INCREMENT,
+   `imeKateg` varchar(50) DEFAULT NULL,
+   `IDUsera` int DEFAULT NULL,
+   PRIMARY KEY (`kategID`),
+   KEY `fkKategUser` (`IDUsera`),
+   CONSTRAINT `fkKategUser` FOREIGN KEY (`IDUsera`) REFERENCES `user` (`userID`)
+ ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
