@@ -88,7 +88,7 @@ const handleSubmit = async() => {
             uradjeno: uradjenoDodaj.value,
             brojac: brojacDodaj.value,
             kategZ: izabranaKategorija.value,
-            cilj: brCilj.value,
+            cilj: cilj.value,
             period: period.value
         },
         {
@@ -99,6 +99,7 @@ const handleSubmit = async() => {
         opisDodaj.value = '';
         rokDodaj.value = null;
         jednokratniDodaj.value = true;
+
         fetchZadatke();
     } catch(error) {
         console.log(error)
@@ -115,8 +116,8 @@ const handleUradjeno = async(zadatak) => {
             brojac: zadatak.brojac,
             rok: formattedDate,
             kategZ: zadatak.IDKategorije,
-            cilj: brCilj.value,
-            period: period.value
+            cilj: zadatak.cilj,
+            period: zadatak.period
         },
         {
             headers: {
@@ -133,6 +134,7 @@ const handleBrojac = async(zadatak) => {
     try{
         //const formattedDate = new Date(zadatak.rok).toISOString().split('T')[0];
         zadatak.brojac += 1;
+        await new Promise(resolve => setTimeout(resolve, 20));
         const response = await axios.put(`/api/izmena-zadataka/${zadatak.zadatakID}`,{
             opis: zadatak.opis,
             uradjeno: zadatak.uradjeno,
@@ -140,16 +142,17 @@ const handleBrojac = async(zadatak) => {
             brojac: zadatak.brojac,
             rok: null,
             kategZ: zadatak.IDKategorije,
-            cilj: brCilj.value,
-            period: period.value
+            cilj: zadatak.cilj,
+            period: zadatak.period
         },
         {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         });
+        await new Promise(resolve => setTimeout(resolve, 20));
         fetchZadatke();
-        await new Promise(resolve => setTimeout(resolve, 5));
+        await new Promise(resolve => setTimeout(resolve, 20));
         const istorija = await axios.post(`/api/brojac/${zadatak.zadatakID}`, {}, {
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -161,6 +164,7 @@ const handleBrojac = async(zadatak) => {
 }
 const handleReset = async(zadatak) => {
     try{
+        await new Promise(resolve => setTimeout(resolve, 20));
         //const formattedDate = new Date(zadatak.rok).toISOString().split('T')[0];
         zadatak.brojac = 0;
         const response = await axios.put(`/api/izmena-zadataka/${zadatak.zadatakID}`,{
@@ -170,16 +174,17 @@ const handleReset = async(zadatak) => {
             brojac: zadatak.brojac,
             rok: null,
             kategZ: zadatak.IDKategorije,
-            cilj: brCilj.value,
-            period: period.value
+            cilj: zadatak.cilj,
+            period: zadatak.period
         },
         {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         });
+        await new Promise(resolve => setTimeout(resolve, 20));
         fetchZadatke();
-        await new Promise(resolve => setTimeout(resolve, 5));
+        await new Promise(resolve => setTimeout(resolve, 20));
         const istorija = await axios.delete(`/api/brojac/${zadatak.zadatakID}`, {
             headers: {
                 'Authorization': `Bearer ${token}`

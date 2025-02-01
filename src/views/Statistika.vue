@@ -93,9 +93,42 @@ const handleChangeFilter = () => {
         for (let i = 0; i < zadaci.value.length; i++) {
             const zadatak = zadaci.value[i];
             const number = document.getElementById('number' + zadatak.zadatakID);
+            //console.log(zadatak.cilj)
             if (zadatak.cilj > 0) {
-                procenat.value = zadatak.brojac / zadatak.cilj * 100;
-                number.innerHTML = procenat.value.toFixed(0) + '%';
+                if (vremenskiPeriod.value == "godisnje") {
+                    procenat.value = zadatak.brojac / zadatak.cilj * 100;
+                    number.innerHTML = procenat.value.toFixed(0) + '%';
+                } 
+                else if (vremenskiPeriod.value == "mesecno") {
+                    const danas = new Date();
+                    const preMesecDana = new Date();
+                    preMesecDana.setMonth(danas.getMonth() - 1);
+
+                    const datumKreiranja = new Date(zadatak.uradjen);
+
+                    if (datumKreiranja >= preMesecDana) {
+                        procenat.value = zadatak.brojac / (zadatak.cilj / 12) * 100;
+                        number.innerHTML = procenat.value.toFixed(0) + '%';
+                    } else {
+                        number.innerHTML = "0%";
+                    }
+                }
+                else{
+                    const danas = new Date();
+                    const preSedamDana = new Date();
+                    preSedamDana.setDate(danas.getDate() - 7);
+
+                    const datumKreiranja = new Date(zadatak.kreiran);
+
+                    if (datumKreiranja >= preSedamDana) {
+                        procenat.value = zadatak.brojac / (zadatak.cilj / 52) * 100;
+                        number.innerHTML = procenat.value.toFixed(0) + '%';
+                        //console.log(procenat.value)
+                        console.log(zadatak.cilj)
+                    } else {
+                        number.innerHTML = "0%";
+                    }
+                }
             }
         }
     }
@@ -129,12 +162,12 @@ const handleChangeFilter = () => {
                         {{ kategorija.imeKateg }}
                     </option>
                 </select>
-                <!--<select name="" id="vremenskiPeriod" class="form-style" v-model="vremenskiPeriod">
+                <select @change="handleChangeFilter" id="vremenskiPeriod" class="form-style" v-model="vremenskiPeriod">
                     <option value="0" selected disabled>Period</option>
                     <option value="godisnje" v-if="tip == 0 || tip == 1">Godišnje</option>
                     <option value="mesecno" v-if="tip == 0 || tip == 1">Mesečno</option>
                     <option value="nedeljno" v-if="tip == 0 || tip == 1">Nedeljno</option>
-                </select>-->
+                </select>
             </div>
         </div>
 
@@ -146,8 +179,8 @@ const handleChangeFilter = () => {
                         <div v-if="zadatak.jednokratni == 0" class="flex-row podatak">
                             <div>
                                 <h3>{{ zadatak.zadatak_opis }}</h3>
-                                <b>{{ zadatak.jednokratni == 1 ? "Jednokratan zadatak" : "Ponavljajući zadatak" }}</b>
                                 <p v-if="kateg == 0">Kategorija: <b>{{ zadatak.kategZ }}</b></p>
+                                <p v-if="filter == 2">{{ zadatak.brojac }} / {{ zadatak.cilj }}</p>
                             </div>
                             <div v-if="filter == 1">
                                 <p>Poslednji put urađeno: <b>{{ formatDate(zadatak.uradjen) }}</b></p>
@@ -294,7 +327,7 @@ h3{
 }
 #number{
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 700;
     color: pink;
 }
 svg{
