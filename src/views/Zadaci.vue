@@ -600,24 +600,43 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 #jednokratni::-webkit-scrollbar,
 #ponavljajuci::-webkit-scrollbar,
-#uradjeno::-webkit-scrollbar-thumb:hover {
+#uradjeni::-webkit-scrollbar-thumb:hover {
     width: 8px;
 }
 #jednokratni::-webkit-scrollbar-track,
 #ponavljajuci::-webkit-scrollbar-track,
-#uradjeno::-webkit-scrollbar-thumb:hover {
+#uradjeni::-webkit-scrollbar-thumb:hover {
     background-color: #555;
     border-radius: 10px;
 }
 #jednokratni::-webkit-scrollbar-thumb,
 #ponavljajuci::-webkit-scrollbar-thumb,
-#uradjeno::-webkit-scrollbar-thumb:hover {
+#uradjeni::-webkit-scrollbar-thumb:hover {
     background-color: #888;
     border-radius: 10px;
 }
 #jednokratni::-webkit-scrollbar-thumb:hover,
 #ponavljajuci::-webkit-scrollbar-thumb:hover,
-#uradjeno::-webkit-scrollbar-thumb:hover {
+#uradjeni::-webkit-scrollbar-thumb:hover {
     background-color: #1c1c1c;
 }
+
+#uradjeni::-webkit-scrollbar {
+    width: 8px;
+}
+
+#uradjeni::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+}
+
+#uradjeni::-webkit-scrollbar-thumb:hover {
+    background-color: #1c1c1c;
+}
+
+#uradjeni::-webkit-scrollbar-track {
+    background-color: #555;
+    border-radius: 10px;
+}
+
 </style>

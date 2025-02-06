@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
 import { useRouter, useRoute, RouterLink } from "vue-router";
 import { toast } from 'vue3-toastify';
@@ -51,7 +51,7 @@ const fetchPodatke = async() => {
          const zadaciFiltered = responseZadaci.data.reduce((acc, zadatak) => {
             const zadatakID = zadatak.zadatakID;
             // Ako već postoji zadatak sa istim zadatakID, proveri da li je ovaj noviji
-            if (!acc[zadatakID] || Date.parse(zadatak.kreiran) > Date.parse(acc[zadatakID].kreiran)) {
+            if (!acc[zadatakID] || Date.parse(zadatak.uradjen) > Date.parse(acc[zadatakID].uradjen)) {
                 acc[zadatakID] = zadatak; // Dodaj ili zameni sa novijim zadatkom
             }
             return acc;
@@ -121,7 +121,8 @@ const handleChangeFilter = () => {
                     const datumKreiranja = new Date(zadatak.kreiran);
 
                     if (datumKreiranja >= preSedamDana) {
-                        procenat.value = zadatak.brojac / (zadatak.cilj / 52) * 100;
+                        let nedeljniCilj = zadatak.cilj / 52;
+                        procenat.value = zadatak.brojac / nedeljniCilj * 100;
                         number.innerHTML = procenat.value.toFixed(0) + '%';
                         //console.log(procenat.value)
                         console.log(zadatak.cilj)
@@ -134,15 +135,24 @@ const handleChangeFilter = () => {
     }
 }
 
+const searchQuery = ref('');
+const filtriraniZadaci = computed(() => {
+    return zadaci.value.filter(zadatak => {
+        const kategorijaMatch = (kateg.value == 0) || 
+            (String(zadatak.kategZ).trim().toLowerCase() === String(kateg.value).trim().toLowerCase());
 
-
+        const pretragaMatch = zadatak.zadatak_opis.toLowerCase().includes(searchQuery.value.toLowerCase());
+        
+        return kategorijaMatch && pretragaMatch;
+    });
+});
 </script>
 
 <template>
     <div id="fs">
         <div class="kartica" id="pretraga">
             <div class="form-group">
-                <input type="text" id="search" class="form-style" placeholder="Pretraži">
+                <input type="text" id="search" class="form-style" placeholder="Pretraži" v-model="searchQuery">
                 <font-awesome-icon :icon="['fas', 'search']" class="input-icon2"></font-awesome-icon>
             </div>
             <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around; width: 80%; padding-top: 5px;">
@@ -158,7 +168,7 @@ const handleChangeFilter = () => {
                 </select>
                 <select name="" id="poKategoriji" class="form-style" v-model="kateg">
                     <option value="0" selected>Sve kategorije</option>
-                    <option v-for="kategorija in kategorije" :key="kategorija.kategID" :value="kategorija.kategID">
+                    <option v-for="kategorija in kategorije" :key="kategorija.kategID" :value="kategorija.imeKateg">
                         {{ kategorija.imeKateg }}
                     </option>
                 </select>
@@ -173,9 +183,9 @@ const handleChangeFilter = () => {
 
         <div id="podaci" class="kartica">
             <div id="podaciSviZadaci" class="podaci-element" v-if="tip == 0">
-                <h1>Svi zadaci</h1>
+                <h1>Ponavljajući zadaci</h1>
                 <div class="odabrani-podaci">
-                    <div style="width: 80%;" v-for="zadatak in zadaci" :key="zadaci.zadatakID">
+                    <div style="width: 80%;" v-for="zadatak in filtriraniZadaci" :key="zadatak.zadatakID">
                         <div v-if="zadatak.jednokratni == 0" class="flex-row podatak">
                             <div>
                                 <h3>{{ zadatak.zadatak_opis }}</h3>

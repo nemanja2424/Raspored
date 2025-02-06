@@ -69,7 +69,7 @@ const fetchKorisnik = async () => {
 
 const handleSubmitProfil = async() => {
     try {
-        const response = await axios.put(`/api/izmenak/${props.id}`,{
+        const response = await axios.put(`/api/izmenak/${userId}`,{
             ime: ime.value,
             email: email.value,
             lozinka: lozinka.value,
@@ -80,7 +80,7 @@ const handleSubmitProfil = async() => {
                 'Authorization': `Bearer ${token}`
             }
         });
-        router.push('/admin').then(() => toast.success(response.data.message));
+        toast.success(response.data.message);
     } catch (error) {
         console.error(error)
     }

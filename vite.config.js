@@ -8,6 +8,10 @@ export default defineConfig({
   plugins: [
     vue(),
   ],
+  base: '/',
+  build: {
+    outDir: 'dist'
+  },
   server: {
     proxy: {
       "/api": {
