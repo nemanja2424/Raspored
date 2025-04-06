@@ -216,96 +216,97 @@ const potvrdiTotBrisanje = async (tabela) => {
 </script>
 
 <template>
-    <div id="fs" v-if="rolaLS === 'admin'">
-      <h1 style="padding-bottom: 10px;">Korisnici</h1>
-      <div style="display: inline-flex;">
-        <RouterLink class="izmena izmena2 glow" id="noviKorisnik" to="novi-korisnik">Dodaj korisnika</RouterLink>
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <td>ID</td>
-            <td>Ime</td>
-            <td>Email</td>
-            <td>Rola</td>
-            <td>Kreirano</td>
-            <td rowspan="2">Izmena</td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="korisnik in korisnici" :key="korisnik.userID" :id="'redK' + korisnik.userID">
-            <td>{{ korisnik.userID }}</td>
-            <td>{{ korisnik.ime }}</td>
-            <td>{{ korisnik.email }}</td>
-            <td>{{ korisnik.rola_ime }}</td>
-            <td>{{ korisnik.kreirano }}</td>
-            <RouterLink :to="'/izmenak/' + korisnik.userID" class="izmena">Izmena</RouterLink>
-            <a class="izmena brisanje" :id="'brisanjeK' + korisnik.userID" @click="potvrdibrisanjeK(korisnik.userID)">Obriši</a>
-          </tr>
-        </tbody>
-      </table>
-      <h1 style="padding: 10px;">Dešavanja</h1>
-      <div class="izmena izmena2 glow" @click="potvrdiTotBrisanje('desavanja')">Obriši sva dešavanja</div>
-      <table>
-        <thead>
-          <tr>
-            <td>ID</td>
-            <td>Korisnik</td>
-            <td>Naslov</td>
-            <td>Celodnevni</td>
-            <td>Datum</td>
-            <td>Početak</td>
-            <td>Kraj</td>
-            <td>Kreiran</td>
-            <td rowspan="2">Izmena</td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="desavanje in desavanja" :key="desavanje.desavanjaID" :id="'redD' + desavanje.desavanjaID">
-            <td>{{ desavanje.desavanjaID }}</td>
-            <td>{{ desavanje.korisnik_ime }}</td>
-            <td>{{ desavanje.naslov }}</td>
-            <td>{{ desavanje.celodnevni == 1 ? "Da" : "Ne" }}</td>
-            <td>{{ desavanje.datum }}</td>
-            <td>{{ desavanje.odTime }}</td>
-            <td>{{ desavanje.doTime }}</td>
-            <td>{{ desavanje.kreiran }}</td>
-            <RouterLink :to="'/izmena/' + desavanje.desavanjaID" class="izmena">Izmena</RouterLink>
-            <a class="izmena brisanje" :id="'brisanjeD' + desavanje.desavanjaID" @click="potvrdibrisanjeD(desavanje.desavanjaID)">Obriši</a>
-          </tr>
-        </tbody>
-      </table>
-      <h1 style="padding: 10px;">Zadaci</h1>
-      <div class="izmena izmena2 glow" @click="potvrdiTotBrisanje('zadaci')">Obriši sve zadatke</div>
-      <table>
-        <thead>
-          <td>ID</td>
-          <td>Korisnik</td>
-          <td>Opis</td>
-          <td>Jednokratni</td>
-          <td>Uradjeno</td>
-          <td>Brojač</td>
-          <td>Rok</td>
-          <td>Kreiran</td>
-          <td>Izmena</td>
-        </thead>
-        <tbody>
-          <tr v-for="zadatak in zadaci" :key="zadatak.zadatakID" :id="'redZ' + zadatak.zadatakID">
-            <td>{{ zadatak.zadatakID }}</td>
-            <td>{{ zadatak.korisnicko_ime }}</td>
-            <td>{{ zadatak.opis }}</td>
-            <td>{{ zadatak.jednokratni == 1 ? "Da" : "Ne" }}</td>
-            <td>{{ zadatak.uradjeno == 1 ? "Da" : "Ne" }}</td>
-            <td>{{ zadatak.brojac }}</td>
-            <td>{{ zadatak.rok }}</td>
-            <td>{{ zadatak.kreiran }}</td>
-            <RouterLink :to="'/izmenaz/' + zadatak.zadatakID" class="izmena">Izmena</RouterLink>
-            <a class="izmena brisanje" :id="'brisanjeZ' + zadatak.zadatakID" @click="potvrdibrisanjeZ(zadatak.zadatakID)">Obriši</a>
-          </tr>
-        </tbody>
-      </table>
+  <div id="fs" v-if="rolaLS === 'admin'">
+    <h1 style="padding-bottom: 10px;">Users</h1>
+    <div style="display: inline-flex;">
+      <RouterLink class="izmena izmena2 glow" id="noviKorisnik" to="novi-korisnik">Add user</RouterLink>
     </div>
+    <table>
+      <thead>
+        <tr>
+          <td>ID</td>
+          <td>Name</td>
+          <td>Email</td>
+          <td>Role</td>
+          <td>Created</td>
+          <td rowspan="2">Edit</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="korisnik in korisnici" :key="korisnik.userID" :id="'redK' + korisnik.userID">
+          <td>{{ korisnik.userID }}</td>
+          <td>{{ korisnik.ime }}</td>
+          <td>{{ korisnik.email }}</td>
+          <td>{{ korisnik.rola_ime }}</td>
+          <td>{{ korisnik.kreirano }}</td>
+          <RouterLink :to="'/izmenak/' + korisnik.userID" class="izmena">Edit</RouterLink>
+          <a class="izmena brisanje" :id="'brisanjeK' + korisnik.userID" @click="potvrdibrisanjeK(korisnik.userID)">Delete</a>
+        </tr>
+      </tbody>
+    </table>
+    <h1 style="padding: 10px;">Events</h1>
+    <div class="izmena izmena2 glow" @click="potvrdiTotBrisanje('desavanja')">Delete all events</div>
+    <table>
+      <thead>
+        <tr>
+          <td>ID</td>
+          <td>User</td>
+          <td>Title</td>
+          <td>All-day</td>
+          <td>Date</td>
+          <td>Start</td>
+          <td>End</td>
+          <td>Created</td>
+          <td rowspan="2">Edit</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="desavanje in desavanja" :key="desavanje.desavanjaID" :id="'redD' + desavanje.desavanjaID">
+          <td>{{ desavanje.desavanjaID }}</td>
+          <td>{{ desavanje.korisnik_ime }}</td>
+          <td>{{ desavanje.naslov }}</td>
+          <td>{{ desavanje.celodnevni == 1 ? "Yes" : "No" }}</td>
+          <td>{{ desavanje.datum }}</td>
+          <td>{{ desavanje.odTime }}</td>
+          <td>{{ desavanje.doTime }}</td>
+          <td>{{ desavanje.kreiran }}</td>
+          <RouterLink :to="'/izmena/' + desavanje.desavanjaID" class="izmena">Edit</RouterLink>
+          <a class="izmena brisanje" :id="'brisanjeD' + desavanje.desavanjaID" @click="potvrdibrisanjeD(desavanje.desavanjaID)">Delete</a>
+        </tr>
+      </tbody>
+    </table>
+    <h1 style="padding: 10px;">Tasks</h1>
+    <div class="izmena izmena2 glow" @click="potvrdiTotBrisanje('zadaci')">Delete all tasks</div>
+    <table>
+      <thead>
+        <td>ID</td>
+        <td>User</td>
+        <td>Description</td>
+        <td>One-time</td>
+        <td>Completed</td>
+        <td>Counter</td>
+        <td>Deadline</td>
+        <td>Created</td>
+        <td>Edit</td>
+      </thead>
+      <tbody>
+        <tr v-for="zadatak in zadaci" :key="zadatak.zadatakID" :id="'redZ' + zadatak.zadatakID">
+          <td>{{ zadatak.zadatakID }}</td>
+          <td>{{ zadatak.korisnicko_ime }}</td>
+          <td>{{ zadatak.opis }}</td>
+          <td>{{ zadatak.jednokratni == 1 ? "Yes" : "No" }}</td>
+          <td>{{ zadatak.uradjeno == 1 ? "Yes" : "No" }}</td>
+          <td>{{ zadatak.brojac }}</td>
+          <td>{{ zadatak.rok }}</td>
+          <td>{{ zadatak.kreiran }}</td>
+          <RouterLink :to="'/izmenaz/' + zadatak.zadatakID" class="izmena">Edit</RouterLink>
+          <a class="izmena brisanje" :id="'brisanjeZ' + zadatak.zadatakID" @click="potvrdibrisanjeZ(zadatak.zadatakID)">Delete</a>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
+
 
 <style scoped>
 table{

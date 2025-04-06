@@ -95,39 +95,38 @@ const formatirajDatum = (datum) => {
 
 <template>
     <div id="fs">
-        <h1>{{ formatiraniDatum }}</h1>
-        <form @submit.prevent="handleSubmit">
-            <input type="text" placeholder="Naslov" class="form-style" v-model="naslov">
-            <div class="vreme">
-                <div>
-                    <p>Od:&nbsp;</p>
-                    <input type="time" class="form-time" id="odTime" v-model="odTime">
-                </div>
-                <div>
-                    <p>Do:&nbsp;</p>
-                    <input type="time" class="form-time" id="doTime" v-model="doTime">
-                </div>
-                <div>
-                    <label>Ceo dan: </label>
-                    <input type="checkbox" class="checkbox" v-model="celodnevni" @click="ceoDan">  
-                </div>
-            </div>
-            
-            <textarea class="form-style tb" placeholder="Opis" v-model="opis"></textarea>
-            <div class="form-group">
-                <select name="kateg" id="kateg" class="form-style" required v-model="izabranaKategorija">
-                    <option v-for="kategorija in kategorije" :key="kategorija.kategID" :value="kategorija.kategID">
-                        {{ kategorija.imeKateg }}
-                    </option>
-                </select>
-                <font-awesome-icon :icon="['fas', 'address-book']" class="input-icon2" />
-            </div>
-            <button class="dugme glow" type="submit">Sačuvaj</button>
-        </form>
+      <h1>{{ formatiraniDatum }}</h1>
+      <form @submit.prevent="handleSubmit">
+        <input type="text" placeholder="Title" class="form-style" v-model="naslov">
+        <div class="vreme">
+          <div>
+            <p>From:&nbsp;</p>
+            <input type="time" class="form-time" id="odTime" v-model="odTime">
+          </div>
+          <div>
+            <p>To:&nbsp;</p>
+            <input type="time" class="form-time" id="doTime" v-model="doTime">
+          </div>
+          <div>
+            <label>All day: </label>
+            <input type="checkbox" class="checkbox" v-model="celodnevni" @click="ceoDan">  
+          </div>
+        </div>
+        
+        <textarea class="form-style tb" placeholder="Description" v-model="opis"></textarea>
+        <div class="form-group">
+          <select name="kateg" id="kateg" class="form-style" required v-model="izabranaKategorija">
+            <option v-for="kategorija in kategorije" :key="kategorija.kategID" :value="kategorija.kategID">
+              {{ kategorija.imeKateg }}
+            </option>
+          </select>
+          <font-awesome-icon :icon="['fas', 'address-book']" class="input-icon2" />
+        </div>
+        <button class="dugme glow" type="submit">Save</button>
+      </form>
     </div>
-    
-</template>
-
+  </template>
+  
 <style scoped>
 
 form{

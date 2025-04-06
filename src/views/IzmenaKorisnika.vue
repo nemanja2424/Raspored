@@ -83,40 +83,39 @@ const handleSubmit = async() => {
 
 <template>
     <div id="fs" v-if="rolaLS === 'admin'">
-        <div id="login">
-            <form @submit.prevent="handleSubmit">
-                <div class="form-group">
-                    <input required type="text" class="form-style" placeholder="Ime" id="ime" v-model="ime"/>
-                    <font-awesome-icon :icon="['fas', 'signature']" class="input-icon" />
-                </div>
-                <div class="form-group">
-                    <input required type="email" class="form-style" placeholder="Email" id="email" v-model="email"/>
-                    <font-awesome-icon :icon="['fas', 'at']" class="input-icon" />
-                </div>
-                <div class="form-group mt-2">
-                    <input type="password" class="form-style" placeholder="Nova lozinka" id="lozinka" v-model="lozinka"/>
-                    <font-awesome-icon :icon="['fas', 'lock']" class="input-icon" />
-                    <div class="showHidePassword">
-                        <font-awesome-icon :icon="['fas', 'eye']" id="show" />
-                        <font-awesome-icon :icon="['fas', 'eye-slash']" id="hide" style="cursor: pointer; display: none" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <select name="rola" id="rola" class="form-style" required v-model="rola">
-                        <option value="0" disabled selected>Odaberi rolu</option>
-                        <option value="1">Korisnik</option>
-                        <option value="2">Admin</option>
-                    </select>
-                    <font-awesome-icon :icon="['fas', 'address-book']" class="input-icon" />
-                </div>
-
-
-                <input type="submit" class="dugme" role="button" value="Izmeni korisnika" />
-            </form>
-        </div>
+      <div id="login">
+        <form @submit.prevent="handleSubmit">
+          <div class="form-group">
+            <input required type="text" class="form-style" placeholder="Name" id="ime" v-model="ime"/>
+            <font-awesome-icon :icon="['fas', 'signature']" class="input-icon" />
+          </div>
+          <div class="form-group">
+            <input required type="email" class="form-style" placeholder="Email" id="email" v-model="email"/>
+            <font-awesome-icon :icon="['fas', 'at']" class="input-icon" />
+          </div>
+          <div class="form-group mt-2">
+            <input type="password" class="form-style" placeholder="New password" id="lozinka" v-model="lozinka"/>
+            <font-awesome-icon :icon="['fas', 'lock']" class="input-icon" />
+            <div class="showHidePassword">
+              <font-awesome-icon :icon="['fas', 'eye']" id="show" />
+              <font-awesome-icon :icon="['fas', 'eye-slash']" id="hide" style="cursor: pointer; display: none" />
+            </div>
+          </div>
+          <div class="form-group">
+            <select name="rola" id="rola" class="form-style" required v-model="rola">
+              <option value="0" disabled selected>Select role</option>
+              <option value="1">User</option>
+              <option value="2">Admin</option>
+            </select>
+            <font-awesome-icon :icon="['fas', 'address-book']" class="input-icon" />
+          </div>
+  
+          <input type="submit" class="dugme" role="button" value="Update user" />
+        </form>
+      </div>
     </div>
-</template>
-
+  </template>
+  
 <style scoped>
 
 #login{
