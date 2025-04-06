@@ -214,14 +214,14 @@ const handleDelete = async(zadatak) => {
     <div id="fs">
         <div id="dodajZadatak">
             <form @submit.prevent="handleSubmit">
-                <input type="text" placeholder="Dodaj zadatak" class="form-style" v-model="opisDodaj" required>
+                <input type="text" placeholder="Add task" class="form-style" v-model="opisDodaj" required>
                 <div class="jednokratnoDodaj">
                     <div style="display: inline-flex;">
-                        <label >Dešavanje je jednokratno:&nbsp;</label>
+                        <label>Event is one-time:&nbsp;</label>
                         <input type="checkbox" class="checkbox" name="jednokratni" v-model="jednokratniDodaj" checked>
                     </div>
                     <div style="display: inline-flex;">
-                        <label>Rok:&nbsp;</label>
+                        <label>Deadline:&nbsp;</label>
                         <input type="date" id="rok" v-model="rokDodaj" class="form-style">
                     </div>
                 </div>
@@ -236,31 +236,31 @@ const handleDelete = async(zadatak) => {
                 <div class="clij-grupa">
                     <div class="form-group period-element">
                         <select name="period" id="period" class="form-style" v-model="period">
-                            <option value="nedeljno" selected>Nedeljno</option>
-                            <option value="mesecno">Mesečno</option>
-                            <option value="godisnje">Godišnje</option>
+                            <option value="nedeljno" selected>Weekly</option>
+                            <option value="mesecno">Monthly</option>
+                            <option value="godisnje">Yearly</option>
                         </select>
                         <font-awesome-icon :icon="['fas', 'trophy']" class="input-icon2" />
                     </div>
-                    <input id="cilj" type="number" class="form-style" placeholder="Cilj ponavljanja" v-model="brCilj">
+                    <input id="cilj" type="number" class="form-style" placeholder="Repetition goal" v-model="brCilj">
                 </div>
-                <button class="dugme glow" type="submit">Sačuvaj</button>
+                <button class="dugme glow" type="submit">Save</button>
             </form>
         </div>
         <div id="dodatiZadaci">
             <div class="kartica">
-                <h1>Jednokratni zadaci</h1>
+                <h1>One-time tasks</h1>
                 <div id="jednokratni">
-                    <div v-for="zadatak in zadaci" :key="zadatak.zadatakID" >
+                    <div v-for="zadatak in zadaci" :key="zadatak.zadatakID">
                         <div class="zadatak" v-if="zadatak.jednokratni === 1 && zadatak.uradjeno === 0">
                             <div>
                                 <h3 style="margin-bottom: 7px;">{{ zadatak.opis }}</h3>
-                                <p>Kategorija: <b>{{ zadatak.kategZ }}</b></p>
-                                <p>Rok: <b>{{ formatDate(zadatak.rok) }}</b></p>
+                                <p>Category: <b>{{ zadatak.kategZ }}</b></p>
+                                <p>Deadline: <b>{{ formatDate(zadatak.rok) }}</b></p>
                                 <p>{{ prosaoRok(zadatak.rok) }}</p>
                             </div>
                             
-                            <div style="display: inline-flex; ">
+                            <div style="display: inline-flex;">
                                 <div :id="'uradi' + zadatak.zadatakID" class="event-option tick glow" style="cursor: pointer;" @click="handleUradjeno(zadatak)">
                                     <font-awesome-icon :icon="['fas', 'check']" style="cursor: pointer;"/>
                                 </div>
@@ -278,16 +278,16 @@ const handleDelete = async(zadatak) => {
                 </div>
             </div>
             <div class="kartica">
-                <h1>Ponavljajući zadaci</h1>
+                <h1>Repeating tasks</h1>
                 <div id="ponavljajuci" class="mojskrol">
-                    <div v-for="zadatak in zadaci" :key="zadatak.zadatakID" >
+                    <div v-for="zadatak in zadaci" :key="zadatak.zadatakID">
                         <div class="zadatak" v-if="zadatak.jednokratni === 0 && zadatak.uradjeno !== 1">
                             <div>
                                 <h3 style="margin-bottom: 7px;">{{ zadatak.opis }}</h3>
-                                <p>Urađeno {{ zadatak.brojac }} puta.</p>
-                                <p>Kategorija: <b>{{ zadatak.kategZ }}</b></p>
+                                <p>Done {{ zadatak.brojac }} times.</p>
+                                <p>Category: <b>{{ zadatak.kategZ }}</b></p>
                             </div>
-                            <div style="display: inline-flex; ">
+                            <div style="display: inline-flex;">
                                 <div :id="'brojac' + zadatak.zadatakID" class="event-option tick glow" style="cursor: pointer;" @click="handleBrojac(zadatak)">
                                     <font-awesome-icon :icon="['fas', 'check']" style="cursor: pointer;"/>
                                 </div>
@@ -311,17 +311,17 @@ const handleDelete = async(zadatak) => {
                 </div>
             </div>
             <div class="kartica">
-                <h1>Urađeni zadaci</h1>
+                <h1>Completed tasks</h1>
                 <div id="uradjeni">
-                    <div v-for="zadatak in zadaci" :key="zadatak.zadatakID" >
+                    <div v-for="zadatak in zadaci" :key="zadatak.zadatakID">
                         <div class="zadatak" v-if="zadatak.uradjeno === 1">
                             <div>
                                 <h3>{{ zadatak.opis }}</h3>
-                                <b>Urađeno</b>
-                                <p>Kategorija: <b>{{ zadatak.kategZ }}</b></p>
+                                <b>Completed</b>
+                                <p>Category: <b>{{ zadatak.kategZ }}</b></p>
                             </div>
                             
-                            <div style="display: inline-flex; ">
+                            <div style="display: inline-flex;">
                                 <div :id="'obrisi' + zadatak.zadatakID" class="event-option trash glow" style="cursor: pointer;" @click="handleDelete(zadatak)">
                                     <font-awesome-icon :icon="['fas', 'trash-can']" style="cursor: pointer;"/>
                                 </div>

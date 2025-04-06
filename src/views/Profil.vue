@@ -126,67 +126,68 @@ const handleDelete = async (kategorija) => {
 
 <template>
     <div id="fs">
-        <div class="kartica">
-            <h1>Profil</h1>
-            <form @submit.prevent="handleSubmitProfil">
-                <div class="form-group">
-                    <input required type="text" class="form-style" placeholder="Ime" id="ime" v-model="ime"/>
-                    <font-awesome-icon :icon="['fas', 'signature']" class="input-icon" />
-                </div>
-                <div class="form-group">
-                    <input required type="email" class="form-style" placeholder="Email" id="email" v-model="email"/>
-                    <font-awesome-icon :icon="['fas', 'at']" class="input-icon" />
-                </div>
-                <div class="form-group mt-2">
-                    <input type="password" class="form-style" placeholder="Nova lozinka" id="lozinka" v-model="lozinka"/>
-                    <font-awesome-icon :icon="['fas', 'lock']" class="input-icon" />
-                    <div class="showHidePassword">
-                        <font-awesome-icon :icon="['fas', 'eye']" id="show" />
-                        <font-awesome-icon :icon="['fas', 'eye-slash']" id="hide" style="cursor: pointer; display: none" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <select name="rola" id="rola" class="form-style" required v-model="rola">
-                        <option value="0" disabled selected>Odaberi rolu</option>
-                        <option value="1">Korisnik</option>
-                        <option value="2" v-if="rolaLS === 'admin'">Admin</option>
-                    </select>
-                    <font-awesome-icon :icon="['fas', 'address-book']" class="input-icon" />
-                </div>
-                <input type="submit" class="dugme" role="button" value="Izmeni korisnika" />
-            </form>
-        </div>
-        <div class="kartica kateg" id="kateg">
-            <div style="margin: 15px 0px;">
-                <form @submit.prevent="handleSubmitKateg">
-                    <div class="form-group form-group2">
-                        <input required type="text" class="form-style" placeholder="Nova kategorija" v-model="novaKateg"/>
-                        <font-awesome-icon :icon="['fas', 'tags']" class="input-icon" />
-                    </div>
-                    <input type="submit" class="dugme" role="button" value="Dodaj kategoriju" style="margin-top: 10px;"/>
-                </form>
+      <div class="kartica">
+        <h1>Profile</h1>
+        <form @submit.prevent="handleSubmitProfil">
+          <div class="form-group">
+            <input required type="text" class="form-style" placeholder="Name" id="ime" v-model="ime"/>
+            <font-awesome-icon :icon="['fas', 'signature']" class="input-icon" />
+          </div>
+          <div class="form-group">
+            <input required type="email" class="form-style" placeholder="Email" id="email" v-model="email"/>
+            <font-awesome-icon :icon="['fas', 'at']" class="input-icon" />
+          </div>
+          <div class="form-group mt-2">
+            <input type="password" class="form-style" placeholder="New password" id="lozinka" v-model="lozinka"/>
+            <font-awesome-icon :icon="['fas', 'lock']" class="input-icon" />
+            <div class="showHidePassword">
+              <font-awesome-icon :icon="['fas', 'eye']" id="show" />
+              <font-awesome-icon :icon="['fas', 'eye-slash']" id="hide" style="cursor: pointer; display: none" />
             </div>
-            <h1 style="margin-bottom: 20px;">Kategorije:</h1>
-            <div v-for="kategorija in kategorije" :key="kategorija.kategID">
-                <div :id="'kateg' + kategorija.kategID" class="zadatak">
-                    <b>{{ kategorija.imeKateg }}</b>
-                    <div style="display: inline-flex;" v-if="kategorija.kategID != 1">
-                        <RouterLink :to="'/izmena-kateg/' + kategorija.kategID">
-                            <div :id="'izmeni' + kategorija.kategID" class="event-option glow" style="cursor: pointer;">
-                                <font-awesome-icon :icon="['fas', 'pen-to-square']" style="cursor: pointer;"/>
-                            </div>
-                        </RouterLink>
-                        <div :id="'obrisi' + kategorija.kategID" class="event-option trash glow" style="cursor: pointer;" @click="handleDelete(kategorija)">
-                            <font-awesome-icon :icon="['fas', 'trash-can']" style="cursor: pointer;"/>
-                        </div>
-                    </div>
-                    
-                </div>
-                
+          </div>
+          <div class="form-group">
+            <select name="rola" id="rola" class="form-style" required v-model="rola">
+              <option value="0" disabled selected>Select role</option>
+              <option value="1">User</option>
+              <option value="2" v-if="rolaLS === 'admin'">Admin</option>
+            </select>
+            <font-awesome-icon :icon="['fas', 'address-book']" class="input-icon" />
+          </div>
+          <input type="submit" class="dugme" role="button" value="Update user" />
+        </form>
+      </div>
+  
+      <div class="kartica kateg" id="kateg">
+        <div style="margin: 15px 0px;">
+          <form @submit.prevent="handleSubmitKateg">
+            <div class="form-group form-group2">
+              <input required type="text" class="form-style" placeholder="New category" v-model="novaKateg"/>
+              <font-awesome-icon :icon="['fas', 'tags']" class="input-icon" />
             </div>
+            <input type="submit" class="dugme" role="button" value="Add category" style="margin-top: 10px;"/>
+          </form>
         </div>
+  
+        <h1 style="margin-bottom: 20px;">Categories:</h1>
+        <div v-for="kategorija in kategorije" :key="kategorija.kategID">
+          <div :id="'kateg' + kategorija.kategID" class="zadatak">
+            <b>{{ kategorija.imeKateg }}</b>
+            <div style="display: inline-flex;" v-if="kategorija.kategID != 1">
+              <RouterLink :to="'/edit-category/' + kategorija.kategID">
+                <div :id="'edit' + kategorija.kategID" class="event-option glow" style="cursor: pointer;">
+                  <font-awesome-icon :icon="['fas', 'pen-to-square']" style="cursor: pointer;"/>
+                </div>
+              </RouterLink>
+              <div :id="'delete' + kategorija.kategID" class="event-option trash glow" style="cursor: pointer;" @click="handleDelete(kategorija)">
+                <font-awesome-icon :icon="['fas', 'trash-can']" style="cursor: pointer;"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</template>
+  </template>
+  
 
 <style scoped>
 

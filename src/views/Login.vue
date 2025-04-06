@@ -61,25 +61,26 @@ function togglePasswordVisibility() {
 
 <template>
     <div class="blur">
-        <div id="login" class="login">
-            <form @submit.prevent="handleSubmit">
-                <div class="form-group">
-                    <input required type="email" class="form-style" placeholder="Email" id="email" v-model="email"/>
-                    <font-awesome-icon :icon="['fas', 'at']" class="input-icon" />
-                </div>
-                <div class="form-group mt-2">
-                    <input required type="password" class="form-style" placeholder="Lozinka" id="lozinka" v-model="lozinka"/>
-                    <font-awesome-icon :icon="['fas', 'lock']" class="input-icon" />
-                    <div class="showHidePassword">
-                        <font-awesome-icon :icon="['fas', 'eye']" id="show" />
-                        <font-awesome-icon :icon="['fas', 'eye-slash']" id="hide" style="cursor: pointer; display: none" />
-                    </div>
-                </div>
-                <input type="submit" class="dugme" role="button" value="Prijavi se" />
-            </form>
-        </div>
+      <div id="login" class="login">
+        <form @submit.prevent="handleSubmit">
+          <div class="form-group">
+            <input required type="email" class="form-style" placeholder="Email" id="email" v-model="email"/>
+            <font-awesome-icon :icon="['fas', 'at']" class="input-icon" />
+          </div>
+          <div class="form-group mt-2">
+            <input required type="password" class="form-style" placeholder="Password" id="lozinka" v-model="lozinka"/>
+            <font-awesome-icon :icon="['fas', 'lock']" class="input-icon" />
+            <div class="showHidePassword">
+              <font-awesome-icon :icon="['fas', 'eye']" id="show" />
+              <font-awesome-icon :icon="['fas', 'eye-slash']" id="hide" style="cursor: pointer; display: none" />
+            </div>
+          </div>
+          <input type="submit" class="dugme" role="button" value="Log in" />
+        </form>
+      </div>
     </div>
-</template>
+  </template>
+  
 
 
 <style scoped>

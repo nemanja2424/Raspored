@@ -143,7 +143,6 @@ const odjava = () => {
 
 
 </script>
-
 <template>
     <div class="sidebar" id="sidebar">
         <div class="logo">
@@ -153,38 +152,38 @@ const odjava = () => {
             <RouterLink to="/">
                 <div class="item pointer">
                     <div><font-awesome-icon :icon="['fas', 'house']" class="ikona"/></div>
-                    <div class="tekst">&nbsp;&nbsp;&nbsp;Početna</div>
+                    <div class="tekst">&nbsp;&nbsp;&nbsp;Home</div>
                 </div>
             </RouterLink>
             <RouterLink v-if="userID" :to="'/kalendar/' + userID">
                 <div class="item pointer">
                     <div><font-awesome-icon :icon="['fas', 'calendar-days']" class="ikona"/></div>
-                    <div class="tekst">&nbsp;&nbsp;&nbsp;Kalendar</div>
+                    <div class="tekst">&nbsp;&nbsp;&nbsp;Calendar</div>
                 </div>
             </RouterLink>
 
             <RouterLink v-if="userID" :to="'/zadaci/' + userID">
                 <div class="item pointer">
                     <div><font-awesome-icon :icon="['fas', 'calendar-check']" class="ikona"/></div>
-                    <div class="tekst">&nbsp;&nbsp;&nbsp;Zadaci</div>
+                    <div class="tekst">&nbsp;&nbsp;&nbsp;Tasks</div>
                 </div>
             </RouterLink>
             <RouterLink to="/statistika">
                 <div class="item pointer">
                     <div><font-awesome-icon :icon="['fas', 'chart-pie']" class="ikona"/></div>
-                    <div class="tekst">&nbsp;&nbsp;&nbsp;Statistika</div>
+                    <div class="tekst">&nbsp;&nbsp;&nbsp;Statistics</div>
                 </div>
             </RouterLink>
             <RouterLink to="/savetnik">
                 <div class="item pointer">
                     <div><font-awesome-icon :icon="['fas', 'robot']" class="ikona"/></div>
-                    <div class="tekst">&nbsp;&nbsp;&nbsp;Savetnik</div>
+                    <div class="tekst">&nbsp;&nbsp;&nbsp;Advisor</div>
                 </div>
             </RouterLink>
             <RouterLink to="/profil">
                 <div class="item pointer">
                     <div><font-awesome-icon :icon="['fas', 'user']" /></div>
-                    <div class="tekst">&nbsp;&nbsp;&nbsp;Profil</div>
+                    <div class="tekst">&nbsp;&nbsp;&nbsp;Profile</div>
                 </div>
             </RouterLink>
             <RouterLink v-if="rolaLS === 'admin'" to="/admin">
@@ -195,12 +194,12 @@ const odjava = () => {
             </RouterLink>
             <div class="item pointer" @click="odjava">
                 <div><font-awesome-icon :icon="['fas', 'right-from-bracket']" /></div>
-                <div class="tekst">&nbsp;&nbsp;&nbsp;Odjava</div>
+                <div class="tekst">&nbsp;&nbsp;&nbsp;Logout</div>
             </div>
         </nav>
         <div id="sidebarSirina" class="item pointer" @click="toggleSidebar">
             <div><font-awesome-icon :icon="['far', 'square-caret-up']" rotation=270 class="ikona" id="sidebarIkona"/></div>
-            <!--<div class="tekst">&nbsp;&nbsp;Skupi sidebar</div>-->
+            <!--<div class="tekst">&nbsp;&nbsp;Collapse sidebar</div>-->
         </div>
     </div>
 
@@ -213,38 +212,38 @@ const odjava = () => {
             <RouterLink to="/">
                 <div class="item pointer">
                     <div><font-awesome-icon :icon="['fas', 'house']" class="ikona"/></div>
-                    <div class="tekst">&nbsp;&nbsp;&nbsp;Početna</div>
+                    <div class="tekst">&nbsp;&nbsp;&nbsp;Home</div>
                 </div>
             </RouterLink>
             <RouterLink v-if="userID" :to="'/kalendar/' + userID">
                 <div class="item pointer">
                     <div><font-awesome-icon :icon="['fas', 'calendar-days']" class="ikona"/></div>
-                    <div class="tekst">&nbsp;&nbsp;&nbsp;Kalendar</div>
+                    <div class="tekst">&nbsp;&nbsp;&nbsp;Calendar</div>
                 </div>
             </RouterLink>
 
             <RouterLink v-if="userID" :to="'/zadaci/' + userID">
                 <div class="item pointer">
                     <div><font-awesome-icon :icon="['fas', 'calendar-check']" class="ikona"/></div>
-                    <div class="tekst">&nbsp;&nbsp;&nbsp;Zadaci</div>
+                    <div class="tekst">&nbsp;&nbsp;&nbsp;Tasks</div>
                 </div>
             </RouterLink>
             <RouterLink to="/statistika">
                 <div class="item pointer">
                     <div><font-awesome-icon :icon="['fas', 'chart-pie']" class="ikona"/></div>
-                    <div class="tekst">&nbsp;&nbsp;&nbsp;Statistika</div>
+                    <div class="tekst">&nbsp;&nbsp;&nbsp;Statistics</div>
                 </div>
             </RouterLink>
             <RouterLink to="/savetnik">
                 <div class="item pointer">
                     <div><font-awesome-icon :icon="['fas', 'robot']" class="ikona"/></div>
-                    <div class="tekst">&nbsp;&nbsp;&nbsp;Savetnik</div>
+                    <div class="tekst">&nbsp;&nbsp;&nbsp;Advisor</div>
                 </div>
             </RouterLink>
             <RouterLink to="/profil">
                 <div class="item pointer">
                     <div><font-awesome-icon :icon="['fas', 'user']" /></div>
-                    <div class="tekst">&nbsp;&nbsp;&nbsp;Profil</div>
+                    <div class="tekst">&nbsp;&nbsp;&nbsp;Profile</div>
                 </div>
             </RouterLink>
             <RouterLink v-if="rolaLS === 'admin'" to="/admin">
@@ -255,15 +254,16 @@ const odjava = () => {
             </RouterLink>
             <div class="item pointer" @click="odjava">
                 <div><font-awesome-icon :icon="['fas', 'right-from-bracket']" /></div>
-                <div class="tekst">&nbsp;&nbsp;&nbsp;Odjava</div>
+                <div class="tekst">&nbsp;&nbsp;&nbsp;Logout</div>
             </div>
         </nav>
         <div id="sidebarSirinaTel" class="item pointer" @click="closeTelSidebar">
             <div><font-awesome-icon :icon="['far', 'square-caret-up']" rotation=270 class="ikona" id="sidebarIkona"/></div>
-            <!--<div class="tekst">&nbsp;&nbsp;Skupi sidebar</div>-->
+            <!--<div class="tekst">&nbsp;&nbsp;Collapse sidebar</div>-->
         </div>
     </div>
 </template>
+
 
 <style scoped>
 .logo{

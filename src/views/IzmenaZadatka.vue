@@ -114,48 +114,48 @@ const handleSubmit = async (event) => {
 };
 
 </script>
-
 <template>
     <div id="fs">
-        <h1>{{ formatiraniDatum }}</h1>
-        <form @submit.prevent="handleSubmit">
-            <input type="text" placeholder="Naslov" class="form-style" v-model="opis">
-            <div class="jednokratnoDodaj">
-                <div style="display: inline-flex;">
-                    <label >Dešavanje je jednokratno:&nbsp;</label>
-                    <input type="checkbox" class="checkbox" name="jednokratni" v-model="jednokratni">
-                </div>
-                <div style="display: inline-flex;">
-                    <label>Rok:&nbsp;</label>
-                    <input type="date" id="rok" v-model="rok" class="form-style">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <select name="kateg" id="kateg" class="form-style" required v-model="izabranaKategorija">
-                    <option v-for="kategorija in kategorije" :key="kategorija.kategID" :value="kategorija.kategID">
-                        {{ kategorija.imeKateg }}
-                    </option>
-                </select>
-                <font-awesome-icon :icon="['fas', 'address-book']" class="input-icon2" />
-            </div>
-            <div class="clij-grupa">
-                    <div class="form-group period-element">
-                        <select name="period" id="period" class="form-style" v-model="period">
-                            <option value="nedeljno" selected>Nedeljno</option>
-                            <option value="mesecno">Mesečno</option>
-                            <option value="godisnje">Godišnje</option>
-                        </select>
-                        <font-awesome-icon :icon="['fas', 'trophy']" class="input-icon2" />
-                    </div>
-                    <input id="cilj" type="number" class="form-style" placeholder="Cilj ponavljanja" v-model="cilj">
-                </div>
-            
-            <button class="dugme glow" type="submit">Sačuvaj</button>
-        </form>
+      <h1>{{ formatiraniDatum }}</h1>
+      <form @submit.prevent="handleSubmit">
+        <input type="text" placeholder="Title" class="form-style" v-model="opis">
+        <div class="jednokratnoDodaj">
+          <div style="display: inline-flex;">
+            <label>This event is one-time:&nbsp;</label>
+            <input type="checkbox" class="checkbox" name="jednokratni" v-model="jednokratni">
+          </div>
+          <div style="display: inline-flex;">
+            <label>Deadline:&nbsp;</label>
+            <input type="date" id="rok" v-model="rok" class="form-style">
+          </div>
+        </div>
+  
+        <div class="form-group">
+          <select name="kateg" id="kateg" class="form-style" required v-model="izabranaKategorija">
+            <option v-for="kategorija in kategorije" :key="kategorija.kategID" :value="kategorija.kategID">
+              {{ kategorija.imeKateg }}
+            </option>
+          </select>
+          <font-awesome-icon :icon="['fas', 'address-book']" class="input-icon2" />
+        </div>
+  
+        <div class="clij-grupa">
+          <div class="form-group period-element">
+            <select name="period" id="period" class="form-style" v-model="period">
+              <option value="nedeljno" selected>Weekly</option>
+              <option value="mesecno">Monthly</option>
+              <option value="godisnje">Yearly</option>
+            </select>
+            <font-awesome-icon :icon="['fas', 'trophy']" class="input-icon2" />
+          </div>
+          <input id="cilj" type="number" class="form-style" placeholder="Repeat goal" v-model="cilj">
+        </div>
+  
+        <button class="dugme glow" type="submit">Save</button>
+      </form>
     </div>
-    
-</template>
+  </template>
+  
 
 <style scoped>
 

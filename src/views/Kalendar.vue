@@ -409,38 +409,37 @@ const changeDay = (datum, datumHeader, smer) => {
 <template>
   <div id="fs">
     <div class="ceoKalendar">
-        <div class="calendar-header">
-            <button class="senkaLevo glow" @click="changeMonth(-1)">
-              &nbsp;<font-awesome-icon :icon="['fas', 'arrow-left']" class=""/>&nbsp;
-            </button>
-            <div style="text-align: center;"><h1>{{ currentYear }} - {{ meseci[currentMonth] }}</h1></div>
-            <button class="senkaDesno glow" @click="changeMonth(1)">
-              &nbsp;<font-awesome-icon :icon="['fas', 'arrow-right']" />&nbsp;
-            </button>
-            </div>
-            <div class="calendar">
-            <!-- Dani u nedelji -->
-            <div v-for="day in daysOfWeek" :key="day" class="day">
-                {{ day }}
-            </div>
-            <!-- Dani u mesecu -->
-            <div
-              v-for="(date, index) in days"
-              @click="filtrirajDesavanja(date)"
-              :key="index"
-              class="date glow"
-              :class="{ 
-                empty: !date, 
-                today: date?.isToday, 
-                otherMonth: date?.isOtherMonth,
-              }"
-              :data-date="`${date?.year}-${String(date?.month + 1).padStart(2, '0')}-${String(date?.day).padStart(2, '0')}`"
-            >
-              {{ date?.day || '' }}
-            </div>
+      <div class="calendar-header">
+        <button class="senkaLevo glow" @click="changeMonth(-1)">
+          &nbsp;<font-awesome-icon :icon="['fas', 'arrow-left']" class=""/>&nbsp;
+        </button>
+        <div style="text-align: center;"><h1>{{ currentYear }} - {{ meseci[currentMonth] }}</h1></div>
+        <button class="senkaDesno glow" @click="changeMonth(1)">
+          &nbsp;<font-awesome-icon :icon="['fas', 'arrow-right']" />&nbsp;
+        </button>
+      </div>
+      <div class="calendar">
+        <!-- Days of the week -->
+        <div v-for="day in daysOfWeek" :key="day" class="day">
+          {{ day }}
         </div>
+        <!-- Days of the month -->
+        <div
+          v-for="(date, index) in days"
+          @click="filtrirajDesavanja(date)"
+          :key="index"
+          class="date glow"
+          :class="{ 
+            empty: !date, 
+            today: date?.isToday, 
+            otherMonth: date?.isOtherMonth,
+          }"
+          :data-date="`${date?.year}-${String(date?.month + 1).padStart(2, '0')}-${String(date?.day).padStart(2, '0')}`"
+        >
+          {{ date?.day || '' }}
+        </div>
+      </div>
     </div>
-    
   </div>
 </template>
 
